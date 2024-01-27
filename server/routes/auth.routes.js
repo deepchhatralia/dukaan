@@ -2,7 +2,7 @@ const KoaRouter = require('koa-router')
 const router = new KoaRouter({ prefix: '/api' })
 const jwt = require('jsonwebtoken')
 
-const verify = require('../utils/verifyToken')
+const verify = require('../middleware/verifyToken')
 
 const User = require('../model/User')
 const client = require('../config/db.config')
