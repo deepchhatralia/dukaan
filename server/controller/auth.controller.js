@@ -52,11 +52,13 @@ const loginController = async ctx => {
 }
 
 const signupController = async ctx => {
-    const fname = ctx.request?.body?.fname
-    const lname = ctx.request?.body?.lname
-    const email = ctx.request?.body?.email
-    const password = ctx.request?.body?.password
-    const cpassword = ctx.request?.body?.cpassword
+    // const fname = ctx.request?.body?.fname
+    // const lname = ctx.request?.body?.lname
+    // const email = ctx.request?.body?.email
+    // const password = ctx.request?.body?.password
+    // const cpassword = ctx.request?.body?.cpassword
+
+    const { fname, lname, email, password, cpassword } = ctx.request.body;
 
     if (!(fname && lname && email && password && cpassword)) {
         ctx.body = { success: false, msg: "All fields are required" }
