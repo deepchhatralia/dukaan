@@ -31,7 +31,7 @@ const Login: React.FC = () => {
             .then((val) => val.payload)
             .then((val) => {
                 if (val.success) {
-                    localStorage.setItem("authModule", JSON.stringify({ ...val.user, token: val.token }))
+                    localStorage.setItem("authModule", JSON.stringify({ ...val.data, token: val.token }))
                     navigate('/product')
                     console.log("here")
                     return
