@@ -1,59 +1,67 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import { authState, logoutUser } from '../redux/authSlice';
 import { DispatchType } from '../redux/store';
 
-const Navbar: React.FC = () => {
+const MyNavbar: React.FC = () => {
     const navigate = useNavigate();
     const token = useSelector((state: authState) => state.token)
     const dispatch = useDispatch<DispatchType>()
 
     const handleLogout = () => {
-        dispatch(logoutUser())
-        navigate('/')
+        if (window.confirm("Logout ??")) {
+            if (localStorage.getItem("authModule")) {
+                dispatch(logoutUser())
+            }
+            navigate('/')
+        }
     }
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-bright bg-light">
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav mr-auto">
-                    <li className="nav-item active">
-                        <a className="nav-link" href="#">
-                            <Link to='/'>Home</Link>
-                        </a>
-                    </li>
-                    {token ?
-                        (<>
-                            <li className="nav-item">
+        <div className='container-fluid mb-4' style={{ backgroundColor: "rebeccapurple" }}>
+            <nav>
+                <div className='row'>
+                    <div className='col-md-4'>
+                        <ul style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }} className="navbar-nav mr-auto">
+                            <li className="nav-item active">
                                 <a className="nav-link" href="#">
-                                    <Link to='/product'>Products</Link>
+                                    <Link to='/' className='link'>Home</Link>
                                 </a>
                             </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">
-                                    <Link to='' onClick={handleLogout}>Logout</Link>
-                                </a>
-                            </li>
-                        </>)
-                        :
-                        (<>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">
-                                    <Link to='/login'>Login</Link>
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="#">
-                                    <Link to='/signup'>Signup</Link>
-                                </a>
-                            </li>
-                        </>)
-                    }
-
-                </ul>
-            </div>
-        </nav>
+                            {token ?
+                                (<>
+                                    <li className="nav-item">
+                                        <a className="nav-link" href="#">
+                                            <Link to='/product' className='link'>Products</Link>
+                                        </a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className="nav-link" href="#">
+                                            <Link to='' className='link' onClick={handleLogout}>Logout</Link>
+                                        </a>
+                                    </li>
+                                </>)
+                                :
+                                (<>
+                                    <li className="nav-item">
+                                        <a className="nav-link" href="#">
+                                            {/* <Navigate to='/login' /> */}
+                                            <Link to='/login' className='link'>Login</Link>
+                                        </a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a className="nav-link" href="#">
+                                            <Link to='/signup' className='link'>Signup</Link>
+                                        </a>
+                                    </li>
+                                </>)
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
     )
 }
-export default Navbar
+export default MyNavbar;
