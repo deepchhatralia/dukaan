@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authState, signupThunk } from "../redux/authSlice";
 import { DispatchType } from "../redux/store";
+import { clearError } from "../utils/clearError";
 
 const Signup = () => {
     const [fname, setFname] = useState("");
@@ -35,18 +36,22 @@ const Signup = () => {
     const signup = () => {
         if (!(fname && lname && email && password && cpassword)) {
             setError("Enter all fields")
+            clearError(setError)
             return;
         }
         if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {
             setError("Invalid email address")
+            clearError(setError)
             return;
         }
         if (password !== cpassword) {
             setError("Password does not match")
+            clearError(setError)
             return;
         }
         if (password.length < 8) {
             setError("Password must be minimum 8 characters long")
+            clearError(setError)
             return;
         }
         setError("")
@@ -59,6 +64,7 @@ const Signup = () => {
                 }
                 clearFields()
                 setError("User signed up")
+                clearError(setError)
                 setTimeout(() => {
                     navigate('/login')
                 }, 2000);
