@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginThunk } from '../redux/authSlice';
-import { useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 import { DispatchType } from '../redux/store';
 import { authState } from '../redux/authSlice';
+
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { clearError } from '../utils/clearError';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -16,13 +19,15 @@ const Login: React.FC = () => {
     const dispatch = useDispatch<DispatchType>();
     const token = useSelector((state: authState) => state.token)
 
-    const authUser = async () => {
+    const authUser = () => {
         if (!(email && password)) {
             setError("All fields are required");
+            clearError(setError)
             return;
         }
         if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {
             setError("Invalid email address");
+            clearError(setError)
             return;
         }
         setError("");
@@ -33,7 +38,6 @@ const Login: React.FC = () => {
                 if (val.success) {
                     localStorage.setItem("authModule", JSON.stringify({ ...val.data, token: val.token }))
                     navigate('/product')
-                    console.log("here")
                     return
                 }
                 // console.log(val)
@@ -54,27 +58,28 @@ const Login: React.FC = () => {
             <div className='container'>
                 <div className='row'>
                     <div className='col-md-6'>
-                        <div className="mb-3">
-                            <label htmlFor="email" className="col-sm-2 col-form-label"> Email </label>
+                        <Form.Group>
+                            <Form.Label htmlFor="email" className="col-sm-2 col-form-label"> Email </Form.Label>
                             <div className="col-sm-10">
-                                <input value={email} onChange={(e) => setEmail(e.target.value)} required={true} type="text" className="form-control" id="email" />
+                                <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" className="form-control" id="email" />
                             </div>
-                        </div>
+                        </Form.Group>
                         <div className="mb-3">
                             <label htmlFor="password" className="col-sm-2 col-form-label" > Password </label>
                             <div className="col-sm-10">
-                                <input value={password} onChange={e => setPassword(e.target.value)} type="password" className="form-control" id="password" required />
+                                <input value={password} onChange={e => setPassword(e.target.value)} type="password" className="form-control" id="password" />
                             </div>
                         </div>
                         < span style={{ color: "red", fontSize: "13px" }}> {error} </span>
                         <div>
-                            <button className='btn btn-primary' onClick={authUser}> Login </button>
+                            <Button onClick={authUser}>Login</Button>
                         </div>
                     </div>
+                    <Outlet />
                 </div>
             </div>
         </>
     )
 }
 
-export default Login
+export default Login;
