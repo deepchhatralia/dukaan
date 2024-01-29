@@ -20,7 +20,13 @@ export const router = createBrowserRouter([
                 <Navbar />
                 <Login />
             </>
-        )
+        ),
+        children: [
+            {
+                path: '/login/childLogin',
+                element: <h1>Hello Child Login</h1>
+            }
+        ]
     },
     {
         path: '/signup',
