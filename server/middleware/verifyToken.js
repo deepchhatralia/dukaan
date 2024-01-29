@@ -9,6 +9,10 @@ const verify = (ctx, next) => {
             ctx.body = { success: false, msg: "JWT token is missing" }
             return
         }
+        // if (user.role !== 'admin') {
+        //     ctx.body = { success: false, msg: "not allowed" }
+        //     return
+        // }
         ctx.req.user = user
         next()
     } catch (err) {
