@@ -19,7 +19,7 @@ export type SignupObjType = {
 
 const initialState: authState = {
     user: null,
-    token: null
+    token: JSON.parse(localStorage.getItem("authModule") || '{}')?.token || null
 }
 
 export const loginThunk = createAsyncThunk("userLogin", async (obj: LoginObjType) => {
