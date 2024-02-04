@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { authState, signupThunk } from "../redux/authSlice";
-import { DispatchType } from "../redux/store";
+import { signupThunk } from "../redux/authSlice";
+import { DispatchType, rootState } from "../redux/store";
 import { clearError } from "../utils/clearError";
+import { setCookie } from "../utils/cookie";
 
 const Signup = () => {
     const [fname, setFname] = useState("");
@@ -13,10 +14,15 @@ const Signup = () => {
     const [cpassword, setCpassword] = useState("");
     const [error, setError] = useState("");
 
+    const setErrorWithClear = (msg: string) => {
+        setError(msg)
+        clearError(setError)
+    }
+
     const navigate = useNavigate()
 
     const dispatch = useDispatch<DispatchType>();
-    const token = useSelector((state: authState) => state.token)
+    const token = useSelector((state: rootState) => state.auth.token)
 
     useEffect(() => {
         if (token) {
@@ -35,39 +41,59 @@ const Signup = () => {
 
     const signup = () => {
         if (!(fname && lname && email && password && cpassword)) {
-            setError("Enter all fields")
-            clearError(setError)
+            setErrorWithClear("Enter all fields")
             return;
+        }
+        if (fname.length < 3) {
+            setErrorWithClear("Minimum 3 characters required for first name")
+            return
+        }
+        if (fname.length > 20) {
+            setErrorWithClear("Maximum 20 characters allowed for first name")
+            return
+        }
+        if (lname.length < 3) {
+            setErrorWithClear("Minimum 3 characters required for last name")
+            return
+        }
+        if (lname.length > 20) {
+            setErrorWithClear("Maximum 20 characters allowed for last name")
+            return
         }
         if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {
-            setError("Invalid email address")
-            clearError(setError)
-            return;
-        }
-        if (password !== cpassword) {
-            setError("Password does not match")
+            setErrorWithClear("Invalid email address")
             clearError(setError)
             return;
         }
         if (password.length < 8) {
-            setError("Password must be minimum 8 characters long")
-            clearError(setError)
+            setErrorWithClear("Minimum password length must be 8")
+            return
+        }
+        if (password.length > 20) {
+            setErrorWithClear("Maximum password length must be 20")
+            return
+        }
+        if (password !== cpassword) {
+            setErrorWithClear("Password does not match")
             return;
         }
-        setError("")
-        dispatch(signupThunk({ fname, lname, email, password, cpassword }))
+
+        setErrorWithClear("")
+
+        // by default set role=0 (merchant)
+        dispatch(signupThunk({ fname, lname, email, password, cpassword, role: 0 }))
             .then(val => val.payload)
             .then(val => {
+                console.log(val)
+                if (val.success) {
+                    setCookie('authModule', { user: val.user, token: val.token })
+                }
                 if (!val.success) {
-                    setError(val.msg)
+                    // if error than returns array of msg(each element is an errors)
+                    // setErrorWithClear(val.msg[0].msg)
+                    setErrorWithClear(val.msg[0].msg)
                     return
                 }
-                clearFields()
-                setError("User signed up")
-                clearError(setError)
-                setTimeout(() => {
-                    navigate('/login')
-                }, 2000);
             })
             .catch(err => {
                 console.log(err);
@@ -113,7 +139,6 @@ const Signup = () => {
                         </div>
                         <span style={{ color: "red", fontSize: "13px" }}>{error}</span>
                         <div>
-                            {/* <input type="submit" value="Signup" className="btn btn-primary" onClick={signup} /> */}
                             <button className='btn btn-primary' onClick={signup}>Signup</button>
                         </div>
                     </div>

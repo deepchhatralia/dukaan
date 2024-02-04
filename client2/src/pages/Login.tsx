@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginThunk } from '../redux/authSlice';
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 
-import { DispatchType } from '../redux/store';
-import { authState } from '../redux/authSlice';
+import { DispatchType, rootState } from '../redux/store';
 
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { clearError } from '../utils/clearError';
+import { setCookie } from '../utils/cookie';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState("");
@@ -17,31 +17,46 @@ const Login: React.FC = () => {
     const navigate = useNavigate()
 
     const dispatch = useDispatch<DispatchType>();
-    const token = useSelector((state: authState) => state.token)
+    const token = useSelector((state: rootState) => state.auth.token)
+
+    const setErrorWithClear = (msg: string) => {
+        setError(msg)
+        clearError(setError)
+    }
 
     const authUser = () => {
+        setEmail(email.trim())
+        setPassword(password.trim())
+
         if (!(email && password)) {
-            setError("All fields are required");
-            clearError(setError)
+            setErrorWithClear("All fields are required");
             return;
         }
         if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)) {
-            setError("Invalid email address");
-            clearError(setError)
+            setErrorWithClear("Invalid email address");
             return;
         }
+        if (password.length < 8) {
+            setErrorWithClear("Minimum password length must be 8")
+            return
+        }
+        if (password.length > 20) {
+            setErrorWithClear("Maximum password length must be 20")
+            return
+        }
+
         setError("");
 
         dispatch(loginThunk({ email, password }))
             .then((val) => val.payload)
             .then((val) => {
                 if (val.success) {
-                    localStorage.setItem("authModule", JSON.stringify({ ...val.data, token: val.token }))
+                    setCookie('authModule', { user: val.user, token: val.token })
                     navigate('/product')
                     return
                 }
-                // console.log(val)
-                setError(val.msg)
+                console.log(val)
+                setErrorWithClear(val.msg)
             })
             .catch((err) => console.log(err));
     };
@@ -51,7 +66,7 @@ const Login: React.FC = () => {
             navigate('/product');
             return;
         }
-    });
+    }, []);
 
     return (
         <>
@@ -69,6 +84,9 @@ const Login: React.FC = () => {
                             <div className="col-sm-10">
                                 <input value={password} onChange={e => setPassword(e.target.value)} type="password" className="form-control" id="password" />
                             </div>
+                        </div>
+                        <div className='mb-3'>
+                            <Link to='/resetPassword'>Forgot password</Link>
                         </div>
                         < span style={{ color: "red", fontSize: "13px" }}> {error} </span>
                         <div>
