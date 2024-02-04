@@ -1,17 +1,18 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate, useNavigate } from "react-router-dom"
-import { authState, logoutUser } from '../redux/authSlice';
-import { DispatchType } from '../redux/store';
+import { logoutUser } from '../redux/authSlice';
+import { DispatchType, rootState } from '../redux/store';
+import { getCookie } from '../utils/cookie';
 
 const MyNavbar: React.FC = () => {
     const navigate = useNavigate();
-    const token = useSelector((state: authState) => state.token)
+    const token = useSelector((state: rootState) => state.auth.token)
     const dispatch = useDispatch<DispatchType>()
 
     const handleLogout = () => {
         if (window.confirm("Logout ??")) {
-            if (localStorage.getItem("authModule")) {
+            if (getCookie('authModule')) {
                 dispatch(logoutUser())
             }
             navigate('/')
@@ -22,38 +23,33 @@ const MyNavbar: React.FC = () => {
         <div className='container-fluid mb-4' style={{ backgroundColor: "rebeccapurple" }}>
             <nav>
                 <div className='row'>
-                    <div className='col-md-4'>
-                        <ul style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }} className="navbar-nav mr-auto">
+                    <div className='col-md-5'>
+                        <ul style={{ display: "flex", flexDirection: "row", justifyContent: "space-around", padding: "8px 0" }} className="navbar-nav mr-auto">
                             <li className="nav-item active">
-                                <a className="nav-link" href="#">
-                                    <Link to='/' className='link'>Home</Link>
-                                </a>
+                                <Link to='/' className='link'>Home</Link>
                             </li>
                             {token ?
                                 (<>
                                     <li className="nav-item">
-                                        <a className="nav-link" href="#">
-                                            <Link to='/product' className='link'>Products</Link>
-                                        </a>
+                                        <Link to='/product' className='link'>Products</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <a className="nav-link" href="#">
-                                            <Link to='' className='link' onClick={handleLogout}>Logout</Link>
-                                        </a>
+                                        <Link to='/staff/inviteStaff' className='link'>Invite Staff</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link to='/changePassword' className='link'>Change Password</Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link to='' className='link' onClick={handleLogout}>Logout</Link>
                                     </li>
                                 </>)
                                 :
                                 (<>
                                     <li className="nav-item">
-                                        <a className="nav-link" href="#">
-                                            {/* <Navigate to='/login' /> */}
-                                            <Link to='/login' className='link'>Login</Link>
-                                        </a>
+                                        <Link to='/login' className='link'>Login</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <a className="nav-link" href="#">
-                                            <Link to='/signup' className='link'>Signup</Link>
-                                        </a>
+                                        <Link to='/signup' className='link'>Signup</Link>
                                     </li>
                                 </>)
                             }
