@@ -1,7 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import { Login, PageNotFound, Product, Signup } from "./pages";
+import { ChangePassword, InviteStaff, Login, PageNotFound, Product, ResetPassword, Signup, Staff } from "./pages";
 import Navbar from "./components/Navbar";
+import InvitationSignup from "./pages/InvitationSignup";
 
 export const router = createBrowserRouter([
     {
@@ -20,13 +21,7 @@ export const router = createBrowserRouter([
                 <Navbar />
                 <Login />
             </>
-        ),
-        children: [
-            {
-                path: '/login/childLogin',
-                element: <h1>Hello Child Login</h1>
-            }
-        ]
+        )
     },
     {
         path: '/signup',
@@ -47,7 +42,48 @@ export const router = createBrowserRouter([
         )
     },
     {
+        path: '/changePassword',
+        element: (
+            <>
+                <Navbar />
+                <ChangePassword />
+            </>
+        )
+    },
+    {
+        path: '/staff',
+        element: (
+            <>
+                <Navbar />
+                <Staff />
+            </>
+        )
+    },
+    { path: '/staff/inviteStaff', element: <InviteStaff /> },
+    {
+        path: 'invitation', element: (
+            <>
+                {/* <Navbar /> */}
+                <InvitationSignup />
+            </>
+        )
+    },
+    {
+        path: '/resetPassword',
+        element: (
+            <>
+                <Navbar />
+                <ResetPassword />
+            </>
+        )
+    },
+    {
         path: '*',
-        element: <PageNotFound />
+        element: (
+            <>
+                <Navbar />
+                <PageNotFound />
+            </>
+        )
     }
 ])
