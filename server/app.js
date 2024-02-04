@@ -5,22 +5,35 @@ const bodyParser = require('koa-bodyparser')
 const cors = require('koa-cors')
 
 const app = new koa()
-
 const client = require('./config/db.config')
-const authRouter = require('./routes/auth.routes')
+
 const PORT = process.env.PORT;
 
-app.use(json())
+const {
+    authRouter, staffRouter, storeRouter, categoryRouter, productRouter,
+    customerRouter, addressRouter, cartRouter
+} = require('./routes')
+
+
 app.use(cors())
 app.use(bodyParser())
 
 app.use(authRouter.routes()).use(authRouter.allowedMethods())
+app.use(staffRouter.routes()).use(staffRouter.allowedMethods())
+app.use(storeRouter.routes()).use(storeRouter.allowedMethods())
+app.use(categoryRouter.routes()).use(categoryRouter.allowedMethods())
+app.use(productRouter.routes()).use(productRouter.allowedMethods())
+
+app.use(customerRouter.routes()).use(customerRouter.allowedMethods())
+app.use(addressRouter.routes()).use(addressRouter.allowedMethods())
+app.use(cartRouter.routes()).use(cartRouter.allowedMethods())
+
 
 app.use((ctx) => {
     ctx.status = 404
     ctx.body = "Page not found..."
-    // ctx.body += "hell"
 })
+
 
 
 client.init((err, db) => {

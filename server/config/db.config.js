@@ -10,6 +10,7 @@ const init = async (cb) => {
 
     MongoClient.connect(URI).then(db => {
         client = db;
+
         cb(null, client);
     }).catch(err => {
         cb(err, null);

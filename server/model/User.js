@@ -1,9 +1,10 @@
 class User {
-    constructor(firstName, lastName, email, password) {
+    constructor(firstName, lastName, email, password, role = 0) {
         this.firstName = firstName
         this.lastName = lastName
         this.email = email
         this.password = password
+        this.role = 0
     }
 
     getObj() {
@@ -11,7 +12,8 @@ class User {
             firstName: this.firstName,
             lastName: this.lastName,
             email: this.email,
-            password: this.password
+            password: this.password,
+            role: this.role
         }
     }
 }
