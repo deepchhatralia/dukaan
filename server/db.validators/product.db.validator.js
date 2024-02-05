@@ -1,5 +1,5 @@
 const { findCategoryByName } = require("../mongodb/category")
-const { findProductByName, findProductByStore } = require("../mongodb/product")
+const { findProductByName, findProductByStore, findProductById } = require("../mongodb/product")
 
 const categoryAlreadyExist = async (ctx) => {
     let err = null
@@ -41,4 +41,18 @@ const productNameAlreadyExist = async (ctx) => {
     return err
 }
 
-module.exports = { categoryAlreadyExist, productNameAlreadyExist }
+const productIdExist = async (ctx) => {
+    let err = null
+    const product_id = ctx.request.body.product_id.trim()
+    const store_id = ctx.user.storeId;
+
+    const resp = await findProductById(product_id, store_id)
+
+    if (!resp) {
+        err = { success: false, data: resp, msg: "Product Id doesnt exist" }
+        return err
+    }
+    return err
+}
+
+module.exports = { categoryAlreadyExist, productNameAlreadyExist, productIdExist }

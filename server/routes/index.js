@@ -7,8 +7,9 @@ const productRouter = require('./product.router')
 const customerRouter = require('./customerAuth.router')
 const addressRouter = require('./address.router')
 const cartRouter = require('./cart.router')
+const orderRouter = require('./order.router')
 
 module.exports = {
     authRouter, staffRouter, storeRouter, categoryRouter, productRouter,
-    customerRouter, addressRouter, cartRouter
+    customerRouter, addressRouter, cartRouter, orderRouter
 }

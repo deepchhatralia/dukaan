@@ -4,19 +4,9 @@ const { findStoreByMerchantId, findStoreByLink } = require('../mongodb/store')
 const getMerchantStoreId = async (ctx, next) => {
     let store;
 
-    // if (!(ctx.request.body.store_link || ctx?.user)) {
-    //     // return next()
-    //     ctx.body = { success: false, message: "Specify store link" }
-    //     return
-    // }
-    // else {
-    //     ctx.body = { success: false, message: "Specify store link" }
-    //     return
-    // }
-
     const userRole = ctx?.user?.role;
 
-    if (userRole === roles.CUSTOMER && ctx.request.body?.store_link) {
+    if ((userRole === roles.CUSTOMER || !userRole) && ctx.request.body?.store_link) {
         const store_link = ctx.request.body?.store_link.trim()
 
         store = await findStoreByLink(store_link)
@@ -37,10 +27,21 @@ const getMerchantStoreId = async (ctx, next) => {
         ctx.body = { success: false, message: "No store found" }
         return
     }
+    console.log(store)
 
     ctx.user["storeId"] = store._id
 
     await next()
+}
+
+const getStoreLink = (ctx, next) => {
+    const storeLink = ctx.request.body?.storeLink
+
+    if (!storeLink) {
+        ctx.body = { success: false, msg: "Specify store link" }
+        return
+    }
+    next()
 }
 
 module.exports = getMerchantStoreId

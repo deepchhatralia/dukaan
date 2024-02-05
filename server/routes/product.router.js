@@ -6,7 +6,7 @@ const validate = require('../middleware/validate.middleware')
 const dbValidate = require('../middleware/dbValidate.middleware')
 const getMerchantStoreId = require('../middleware/store.middleware');
 
-const { productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator, productIdValidator } = require('../validators/product.validator');
+const { productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator, productIdValidator, oldProductNameValidator } = require('../validators/product.validator');
 
 const { getProducts, addProductController, deleteProduct, updateProduct, getProduct, getActiveProducts, getProductsByStoreLink } = require('../controller/product.controller');
 const { productNameAlreadyExist } = require('../db.validators/product.db.validator')
@@ -22,7 +22,15 @@ const { storeLinkValidator } = require('../validators/store.validator')
 //     getProductsByStoreLink
 // )
 
+// no auth routes
+// router.get('/c/',
+//     // getNoAuthActiveProducts
+//     getProducts
+// )
 
+
+
+// auth routes
 router.get('/',
     authMiddleware,
     getMerchantStoreId,
@@ -32,12 +40,12 @@ router.get('/',
 router.get('/getActiveProducts',
     authMiddleware,
     getMerchantStoreId,
-    // validate([productIdValidator]),
+    validate([productIdValidator]),
     getActiveProducts
 )
 
 router.get('/:productId',
-    authMiddleware,
+    // authMiddleware,
     getMerchantStoreId,
     validate([productIdValidator]),
     getProduct
@@ -55,7 +63,7 @@ router.post('/addProduct',
 router.put('/updateProduct',
     authMiddleware,
     getMerchantStoreId,
-    validate([productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator, productIdValidator]),
+    validate([oldProductNameValidator, productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator, productIdValidator]),
     dbValidate([productNameAlreadyExist]),
     updateProduct
 )

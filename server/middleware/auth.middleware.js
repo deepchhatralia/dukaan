@@ -6,12 +6,13 @@ const roles = require('../constants/roles');
 const { findToken } = require('../mongodb/token');
 
 const authMiddleware = async (ctx, next) => {
-    if (!ctx.header.authorization) {
-        ctx.response.body = { success: false, msg: "Unauthorized!" };
+    const token = ctx.header['authorization']
+
+    if (!token) {
+        ctx.body = { success: false, msg: "Unauthorized!" };
         return;
     }
 
-    const token = ctx.header['authorization']
 
     try {
         const user = decodeJwt(token);

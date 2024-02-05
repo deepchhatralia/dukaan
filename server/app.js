@@ -11,7 +11,7 @@ const PORT = process.env.PORT;
 
 const {
     authRouter, staffRouter, storeRouter, categoryRouter, productRouter,
-    customerRouter, addressRouter, cartRouter
+    customerRouter, addressRouter, cartRouter, orderRouter
 } = require('./routes')
 
 
@@ -27,13 +27,13 @@ app.use(productRouter.routes()).use(productRouter.allowedMethods())
 app.use(customerRouter.routes()).use(customerRouter.allowedMethods())
 app.use(addressRouter.routes()).use(addressRouter.allowedMethods())
 app.use(cartRouter.routes()).use(cartRouter.allowedMethods())
+app.use(orderRouter.routes()).use(orderRouter.allowedMethods())
 
 
 app.use((ctx) => {
     ctx.status = 404
     ctx.body = "Page not found..."
 })
-
 
 
 client.init((err, db) => {

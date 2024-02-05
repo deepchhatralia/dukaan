@@ -12,9 +12,9 @@ const dbValidate = (validators) => {
             }
         }))
 
-        // console.log(validationErrors)
         if (validationErrors.length) {
-            return ctx.body = { success: false, message: validationErrors, msg: "Error" }
+            ctx.body = { success: false, message: validationErrors, msg: "Error" }
+            return
         }
         await next()
     }

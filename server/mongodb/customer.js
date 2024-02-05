@@ -10,7 +10,6 @@ const findCustomerByEmail = async (email) => {
 };
 
 const findCustomerById = async (customer_id) => {
-    console.log(customer_id)
     return await client.getDb().db(dbName).collection(collectionName).findOne({ _id: new ObjectId(customer_id) });
 };
 

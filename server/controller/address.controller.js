@@ -1,5 +1,5 @@
 const { ObjectId } = require("mongodb")
-const { getAllCustomerAddress, insertAddress, deleteAddressById } = require("../mongodb/address")
+const { getAllCustomerAddress, insertAddress, deleteAddressById, updateAddress } = require("../mongodb/address")
 
 const getAddressController = async (ctx) => {
     const { _id } = ctx.user
@@ -28,6 +28,24 @@ const addAddressController = async (ctx) => {
     ctx.body = { success: true, msg: "Added", data: resp }
 }
 
+const updateAddressController = async (ctx) => {
+    const customer_id = ctx.user._id
+    let { address_id, address, city, state, country } = ctx.request.body
+
+    address = address.trim()
+    city = city.trim()
+    state = state.trim()
+    country = country.trim()
+
+    const resp = await updateAddress({ _id: new ObjectId(address_id), customer_id: new ObjectId(customer_id) }, { location: { address, city, state, country }, customer_id: new ObjectId(customer_id) })
+
+    if (!resp) {
+        ctx.body = { success: false, msg: "Address Id doesnt exist", data: resp }
+        return
+    }
+    ctx.body = { success: true, msg: "Updated", data: resp }
+}
+
 const deleteAddressController = async (ctx) => {
     const { _id } = ctx.user
     const addressId = ctx.request.body.address_id.trim()
@@ -42,4 +60,4 @@ const deleteAddressController = async (ctx) => {
 
 }
 
-module.exports = { getAddressController, addAddressController, deleteAddressController }
+module.exports = { getAddressController, addAddressController, updateAddressController, deleteAddressController }

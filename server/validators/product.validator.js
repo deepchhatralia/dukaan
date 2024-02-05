@@ -89,6 +89,29 @@ const productNameValidator = ({ product_name }) => {
     return err
 }
 
+const oldProductNameValidator = ({ old_product_name }) => {
+    let err = null;
+
+    if (!old_product_name) {
+        err = { message: 'Specify old product name', field: "old_product_name" };
+        return err
+    }
+
+    old_product_name = old_product_name.trim()
+
+    if (old_product_name.length < 3) {
+        err = { message: 'Minimum 3 characters required', field: "old_product_name" };
+        return err
+    }
+
+    if (old_product_name.length > 50) {
+        err = { message: 'Maximum 50 characters allowed', field: "old_product_name" };
+        return err
+    }
+
+    return err
+}
+
 const stockValidator = ({ product_stock }) => {
     let err = null;
 
@@ -177,4 +200,4 @@ const imageLinkValidator = ({ img }) => {
 }
 
 
-module.exports = { categoryIdValidator, categoryNameValidator, productIdValidator, productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator }
+module.exports = { categoryIdValidator, categoryNameValidator, productIdValidator, oldProductNameValidator, productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator }

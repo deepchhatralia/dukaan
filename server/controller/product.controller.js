@@ -1,10 +1,22 @@
 const { ObjectId } = require('mongodb')
-const { addProduct, deleteProductById, findProductByStore, updateProductById, findProductById, findActiveProducts, findProductByStoreLink } = require('../mongodb/product')
+const { addProduct, deleteProductById, findProductByStore, updateProductById, findProductById, findActiveProducts, findProductByStoreLink, findProductByCategoryId } = require('../mongodb/product')
 
 const getProducts = async (ctx) => {
     const storeId = ctx.user.storeId
 
     const resp = await findProductByStore(storeId)
+
+    if (!resp.length) {
+        ctx.body = { success: false, msg: "No products found" }
+        return
+    }
+    ctx.body = { success: true, data: resp, msg: "Found" }
+}
+
+const getCategoryProducts = async (ctx) => {
+    const category_id = ctx.request.body.category_id
+
+    const resp = await findProductByCategoryId(category_id)
 
     if (!resp.length) {
         ctx.body = { success: false, msg: "No products found" }
@@ -42,6 +54,19 @@ const getProduct = async (ctx) => {
 
 const getActiveProducts = async (ctx) => {
     const storeId = ctx.user.storeId
+
+    const resp = await findActiveProducts(storeId)
+
+    if (!resp.length) {
+        ctx.body = { success: false, msg: "No products found" }
+        return
+    }
+
+    ctx.body = { success: true, data: resp, msg: "Found" }
+}
+
+const getNoAuthActiveProducts = async (ctx) => {
+    const storeLink = ctx.request.body.storeLink
 
     const resp = await findActiveProducts(storeId)
 
@@ -104,4 +129,4 @@ const updateProduct = async (ctx) => {
 
 }
 
-module.exports = { getProducts, getProduct, getProductsByStoreLink, getActiveProducts, addProductController, deleteProduct, updateProduct }
+module.exports = { getProducts, getProduct, getCategoryProducts, getProductsByStoreLink, getActiveProducts, addProductController, deleteProduct, updateProduct }

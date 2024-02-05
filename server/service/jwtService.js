@@ -7,8 +7,13 @@ const generateJwt = (payload, expIn = "24h") => {
 }
 
 const decodeJwt = (token) => {
-    const decoded = jwt.verify(token, SECRET_VALUE)
-    return decoded
+    try {
+        const decoded = jwt.verify(token, SECRET_VALUE)
+        return decoded
+    } catch (err) {
+        console.log(err.message)
+        return null
+    }
 }
 
 module.exports = { generateJwt, decodeJwt }

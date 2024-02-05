@@ -18,8 +18,12 @@ const insertAddress = async (addressObject) => {
     return await client.getDb().db(dbName).collection(collectionName).insertOne({ ...addressObject });
 }
 
+const updateAddress = async (filter, addressObject) => {
+    return await client.getDb().db(dbName).collection(collectionName).findOneAndUpdate(filter, { $set: { ...addressObject } }, { returnDocument: 'after' });
+}
+
 const deleteAddressById = async (addressId, customerId) => {
     return await client.getDb().db(dbName).collection(collectionName).deleteOne({ _id: new ObjectId(addressId), customer_id: new ObjectId(customerId) });
 }
 
-module.exports = { getAddressById, getAllCustomerAddress, insertAddress, deleteAddressById }
+module.exports = { getAddressById, getAllCustomerAddress, insertAddress, updateAddress, deleteAddressById }

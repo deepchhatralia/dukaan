@@ -19,6 +19,7 @@ const addCategoryController = async ctx => {
     category_name = category_name.trim()
     store_id = ctx.user.storeId
 
+    // ctx.body = store_id
     const resp = await addCategory({ category_name, store_id: new ObjectId(store_id) })
 
     ctx.body = { success: true, msg: "Added" }
