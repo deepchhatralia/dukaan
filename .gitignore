@@ -2,6 +2,8 @@
 **.env
 
 server/test.js
+server/dist
+
 client/redux.txt
 
 notes.txt

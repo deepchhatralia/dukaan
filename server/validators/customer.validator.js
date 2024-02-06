@@ -20,4 +20,4 @@ const customerIdValidator = (_, ctx) => {
     return err;
 }
 
-module.exports = { customerIdValidator }
+export { customerIdValidator }

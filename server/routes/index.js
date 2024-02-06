@@ -1,15 +1,15 @@
-const authRouter = require('./auth.router')
-const staffRouter = require('./staff.router')
-const storeRouter = require('./store.router')
-const categoryRouter = require('./category.router')
-const productRouter = require('./product.router')
+import authRouter from './auth.router'
+import staffRouter from './staff.router'
+import storeRouter from './store.router'
+import categoryRouter from './category.router'
+import productRouter from './product.router'
 
-const customerRouter = require('./customerAuth.router')
-const addressRouter = require('./address.router')
-const cartRouter = require('./cart.router')
-const orderRouter = require('./order.router')
+import customerRouter from './customerAuth.router'
+import addressRouter from './address.router'
+import cartRouter from './cart.router'
+import orderRouter from './order.router'
 
-module.exports = {
+export {
     authRouter, staffRouter, storeRouter, categoryRouter, productRouter,
     customerRouter, addressRouter, cartRouter, orderRouter
 }

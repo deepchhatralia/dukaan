@@ -9,4 +9,4 @@ const allowedRoles = (acceptedRoles) => {
     }
 }
 
-module.exports = allowedRoles
+export default allowedRoles

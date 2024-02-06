@@ -1,5 +1,5 @@
-const { findStaffById } = require("../mongodb/staff");
-const { findStoreByLink, findStoreById, findStoreByMerchantId } = require("../mongodb/store");
+import { findStaffById } from "../mongodb/staff"
+import { findStoreByLink, findStoreById, findStoreByMerchantId } from "../mongodb/store"
 
 const storeLinkExistValidator = async (ctx) => {
     let err = null;
@@ -77,4 +77,4 @@ const storeLinkExist = async ctx => {
     return err
 }
 
-module.exports = { storeLinkExistValidator, merchantIdExistInUser, storeIdExist, storeAlreadyExist, storeLinkExist }
+export { storeLinkExistValidator, merchantIdExistInUser, storeIdExist, storeAlreadyExist, storeLinkExist }

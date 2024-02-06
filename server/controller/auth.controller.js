@@ -1,9 +1,10 @@
 
-const { sendMail, passwordService: { hashPassword, comparePassword }, jwtService: { generateJwt, decodeJwt } } = require('../service')
+import { sendMail, hashPassword, comparePassword, generateJwt, decodeJwt } from '../service'
 
-const { findStaffByEmail, insertStaff, updateStaff } = require('../mongodb/staff')
-const { deleteInvitedStaff, updateInvitedStaff, findInvitedStaff } = require('../mongodb/token')
-const roles = require('../constants/roles')
+import { findStaffByEmail, insertStaff, updateStaff } from '../mongodb/staff'
+import { deleteInvitedStaff, updateInvitedStaff, findInvitedStaff } from '../mongodb/token'
+import roles from '../constants/roles'
+
 
 const dbName = process.env.DB_NAME
 let collectionName = "staff"
@@ -93,4 +94,4 @@ const verifyResetToken = async (ctx) => {
     ctx.body = { success: true, msg: "Password changed" }
 }
 
-module.exports = { loginController, signupController, changePasswordController, sendResetLink, verifyResetToken }
+export { loginController, signupController, changePasswordController, sendResetLink, verifyResetToken }

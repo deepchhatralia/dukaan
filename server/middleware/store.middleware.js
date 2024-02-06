@@ -1,5 +1,5 @@
-const roles = require('../constants/roles')
-const { findStoreByMerchantId, findStoreByLink } = require('../mongodb/store')
+import roles from '../constants/roles'
+import { findStoreByMerchantId, findStoreByLink } from '../mongodb/store'
 
 const getMerchantStoreId = async (ctx, next) => {
     let store;
@@ -44,4 +44,4 @@ const getStoreLink = (ctx, next) => {
     next()
 }
 
-module.exports = getMerchantStoreId
+export default getMerchantStoreId

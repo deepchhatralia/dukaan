@@ -6,4 +6,4 @@ const roles = {
     CUSTOMER: 4
 }
 
-module.exports = roles
+export default roles

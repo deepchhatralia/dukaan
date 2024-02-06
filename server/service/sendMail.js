@@ -1,5 +1,7 @@
-require('dotenv').config()
-const nodemailer = require('nodemailer')
+import dotenv from 'dotenv'
+import nodemailer from 'nodemailer'
+
+dotenv.config()
 
 const sendMail = async (to, subject, linkPreview, redirectLink) => {
     const transporter = nodemailer.createTransport({
@@ -20,5 +22,5 @@ const sendMail = async (to, subject, linkPreview, redirectLink) => {
         html: `<a href="${redirectLink}"> ${linkPreview} ↗️</a>`
     });
     console.log(info)
-}
-module.exports = sendMail
+};
+export default sendMail

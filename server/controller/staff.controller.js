@@ -1,11 +1,10 @@
-const client = require('../config/db.config')
-const jwt = require('jsonwebtoken')
+
 const sendMail = require('../service/sendMail')
-const { generateJwt, decodeJwt } = require('../service/jwtService')
-const { hashPassword } = require('../service/passwordService')
-const { findStaffByEmail, insertStaff } = require('../mongodb/staff')
-const { updateInvitedStaff, findInvitedStaff, deleteInvitedStaff } = require('../mongodb/token')
-const { ObjectId } = require('mongodb')
+import { generateJwt, decodeJwt } from '../service/jwtService'
+import { hashPassword } from '../service/passwordService'
+import { findStaffByEmail, insertStaff } from '../mongodb/staff'
+import { updateInvitedStaff, findInvitedStaff, deleteInvitedStaff } from '../mongodb/token'
+import { ObjectId } from 'mongodb'
 
 const dbName = process.env.DB_NAME
 const collectionName = 'staff'
@@ -16,10 +15,7 @@ const inviteStaff = async (ctx) => {
     email = email.trim()
     const user = ctx.user
 
-    // isInvited will be used at auth.middleware to find staff either from invitedStaff or user
     const inviteStaffToken = generateJwt({ email, role, isInvited: true })
-
-    // await updateInvitedStaff({ email }, { $set: { email, role, invited_merchant_id: ctx.user._id, expiresIn: Date.now() + 3600000 } }, { upsert: true })
 
     await updateInvitedStaff({ email }, { $set: { email, role, store_id: new ObjectId(user.store_id), expiresIn: Date.now() + 3600000, invited_merchant_id: new ObjectId(user._id) } }, { upsert: true })
 
@@ -48,4 +44,4 @@ const acceptInvitation = async (ctx) => {
 
 }
 
-module.exports = { inviteStaff, acceptInvitation }
+export { inviteStaff, acceptInvitation }

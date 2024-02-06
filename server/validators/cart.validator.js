@@ -24,4 +24,4 @@ const quantityValidator = ({ qty }) => {
     return err
 }
 
-module.exports = { quantityValidator }
+export { quantityValidator }

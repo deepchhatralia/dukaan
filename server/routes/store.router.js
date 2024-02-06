@@ -1,25 +1,25 @@
-const KoaRouter = require('koa-router')
+import KoaRouter from 'koa-router'
 const router = new KoaRouter({ prefix: '/api/v1/store' })
 
-const validate = require('../middleware/validate.middleware')
-const dbValidate = require('../middleware/dbValidate.middleware')
+import roles from '../constants/roles'
+import auth2Middleware from '../middleware/auth2.middleware'
 
-const { nameValidator, contactValidator, isOpenValidator, merchantIdValidator, storeIdValidator, cityValidator, stateValidator, countryValidator, storeLinkValidator } = require('../validators/store.validator')
-const { storeLinkExistValidator, merchantIdExistInUser, storeAlreadyExist } = require('../db.validators/store.db.validator')
-const { addStore, getMerchantStore, deleteStore, updateStore, getMerchantStoreById } = require('../controller/store.controller')
-const authMiddleware = require('../middleware/auth.middleware')
-const auth2Middleware = require('../middleware/auth2.middleware')
-const roles = require('../constants/roles')
+import validate from '../middleware/validate.middleware'
+import dbValidate from '../middleware/dbValidate.middleware'
+
+import { nameValidator, contactValidator, isOpenValidator, merchantIdValidator, storeIdValidator, cityValidator, stateValidator, countryValidator, storeLinkValidator } from '../validators/store.validator'
+import { storeLinkExistValidator, merchantIdExistInUser, storeAlreadyExist } from '../db.validators/store.db.validator'
+import { addStore, getMerchantStore, deleteStore, updateStore, getMerchantStoreById } from '../controller/store.controller'
 
 
 // get all stores of merchant 
 router.post('/',
-    auth2Middleware,
+    auth2Middleware([roles.MERCHANT]),
     getMerchantStore
 )
 
 router.get('/:storeId',
-    auth2Middleware,
+    auth2Middleware([roles.MERCHANT]),
     getMerchantStoreById
 )
 
@@ -31,16 +31,16 @@ router.post('/addStore',
 )
 
 router.put('/updateStore',
-    auth2Middleware,
+    auth2Middleware([roles.MERCHANT]),
     validate([storeLinkValidator, storeIdValidator, nameValidator, contactValidator, isOpenValidator, cityValidator, stateValidator, countryValidator]),
     dbValidate([storeLinkExistValidator]),
     updateStore
 )
 
 router.delete('/deleteStore',
-    auth2Middleware,
+    auth2Middleware([roles.MERCHANT]),
     validate([storeIdValidator]),
     deleteStore
 )
 
-module.exports = router
+export default router

@@ -1,19 +1,15 @@
-const KoaRouter = require('koa-router')
+import KoaRouter from 'koa-router'
 const router = new KoaRouter({ prefix: '/api/v1/product-category' })
 
-const authMiddleware = require('../middleware/auth.middleware')
-const validate = require('../middleware/validate.middleware');
-const dbValidate = require('../middleware/dbValidate.middleware')
+import roles from '../constants/roles'
+import auth2Middleware from '../middleware/auth2.middleware'
+import validate from '../middleware/validate.middleware'
+
+import dbValidate from '../middleware/dbValidate.middleware'
 
 const { categoryNameValidator, categoryIdValidator } = require('../validators/product.validator');
-const { storeIdValidator } = require('../validators/store.validator');
 const { getCategories, deleteCategory, addCategoryController, updateCategory } = require('../controller/category.controller');
-const { storeIdExist } = require('../db.validators/store.db.validator');
 const { categoryAlreadyExist, categoryNameValidateForUpdate } = require('../db.validators/product.db.validator');
-const getMerchantStoreId = require('../middleware/store.middleware');
-const allowedRoles = require('../middleware/role.middleware');
-const roles = require('../constants/roles');
-const auth2Middleware = require('../middleware/auth2.middleware');
 const { storeExist } = require('../db.validators/auth.db.validator');
 
 router.get('/',
@@ -41,4 +37,4 @@ router.delete('/deleteCategory',
     deleteCategory
 )
 
-module.exports = router
+export default router

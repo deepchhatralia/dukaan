@@ -1,5 +1,5 @@
-const { ObjectId } = require("mongodb")
-const { getAllCustomerAddress, insertAddress, deleteAddressById, updateAddress } = require("../mongodb/address")
+import { ObjectId } from "mongodb"
+import { getAllCustomerAddress, insertAddress, deleteAddressById, updateAddress } from '../mongodb/address'
 
 const getAddressController = async (ctx) => {
     const { _id } = ctx.user
@@ -60,4 +60,4 @@ const deleteAddressController = async (ctx) => {
 
 }
 
-module.exports = { getAddressController, addAddressController, updateAddressController, deleteAddressController }
+export { getAddressController, addAddressController, updateAddressController, deleteAddressController }

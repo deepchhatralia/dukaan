@@ -1,16 +1,15 @@
-const KoaRouter = require('koa-router')
+import KoaRouter from 'koa-router'
 const router = new KoaRouter({ prefix: '/api/v1/customer/order' })
 
+import auth2Middleware from '../middleware/auth2.middleware'
+import validate from '../middleware/validate.middleware'
+import roles from '../constants/roles'
 
-const auth2Middleware = require('../middleware/auth2.middleware')
-const validate = require('../middleware/validate.middleware')
-// const getMerchantStoreId = require('../middleware/store.middleware')
 
 
 // for seller 
-router.get('/',
-    auth2Middleware,
-    validate([]),
-)
+// router.get('/',
+//     auth2Middleware([roles.MERCHANT])
+// )
 
-module.exports = router
+export default router

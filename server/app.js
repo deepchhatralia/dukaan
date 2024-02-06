@@ -1,19 +1,27 @@
-require('dotenv').config();
-const koa = require('koa')
-const json = require('koa-json')
-const bodyParser = require('koa-bodyparser')
-const cors = require('koa-cors')
+import dotenv from 'dotenv'
+dotenv.config()
+
+import koa from 'koa'
+import json from 'koa-json'
+import bodyParser from 'koa-bodyparser'
+import cors from 'koa-cors'
 
 const app = new koa()
-const client = require('./config/db.config')
+import { init } from './config/db.config'
 
 const PORT = process.env.PORT;
 
-const {
+import {
     authRouter, staffRouter, storeRouter, categoryRouter, productRouter,
     customerRouter, addressRouter, cartRouter, orderRouter
-} = require('./routes')
+} from './routes'
 
+import KoaRouter from 'koa-router'
+const router = new KoaRouter()
+
+console.log(router.get)
+
+router.get('/', ctx => ctx.body = "Hello World")
 
 app.use(cors())
 app.use(bodyParser())
@@ -36,7 +44,7 @@ app.use((ctx) => {
 })
 
 
-client.init((err, db) => {
+init((err, db) => {
     if (err) {
         console.log(err);
         return;

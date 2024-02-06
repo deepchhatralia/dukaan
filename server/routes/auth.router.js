@@ -1,17 +1,15 @@
-const KoaRouter = require('koa-router')
+import KoaRouter from 'koa-router'
 const router = new KoaRouter({ prefix: '/api/v1/auth' })
 
-const authMiddleware = require('../middleware/auth.middleware')
+import roles from '../constants/roles'
+import auth2Middleware from '../middleware/auth2.middleware'
+import validate from '../middleware/validate.middleware'
 
-const validate = require("../middleware/validate.middleware")
-const { emailValidator, passwordValidator, firstNameValidator, confirmPasswordValidator, lastNameValidator, oldPasswordValidator } = require('../validators/auth.validator')
+import { emailValidator, passwordValidator, firstNameValidator, confirmPasswordValidator, lastNameValidator, oldPasswordValidator } from '../validators/auth.validator'
 
-const { emailExistValidator, emailDoesntExistValidator, unexpiredTokenExist, findStaffAndVerifyPassword } = require('../db.validators/auth.db.validator')
-const dbValidate = require('../middleware/dbValidate.middleware')
-const getMerchantStoreId = require('../middleware/store.middleware')
-const { loginController, signupController, changePasswordController, sendResetLink, verifyResetToken } = require('../controller/auth.controller')
-const roles = require('../constants/roles')
-const auth2Middleware = require('../middleware/auth2.middleware')
+import { emailExistValidator, emailDoesntExistValidator, unexpiredTokenExist, findStaffAndVerifyPassword } from '../db.validators/auth.db.validator'
+import dbValidate from '../middleware/dbValidate.middleware'
+import { loginController, signupController, changePasswordController, sendResetLink, verifyResetToken } from '../controller/auth.controller'
 
 router.get('/getProducts',
     auth2Middleware([roles.CUSTOMER]),
@@ -61,4 +59,4 @@ router.post('/verifyResetToken',
     verifyResetToken
 )
 
-module.exports = router
+export default router

@@ -1,4 +1,4 @@
-const bluebird = require('bluebird')
+import bluebird from 'bluebird'
 
 const validate = (validators) => {
     return async (ctx, next) => {
@@ -18,4 +18,4 @@ const validate = (validators) => {
         await next()
     }
 }
-module.exports = validate
+export default validate

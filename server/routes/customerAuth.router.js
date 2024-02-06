@@ -1,17 +1,18 @@
-const KoaRouter = require('koa-router')
+import KoaRouter from 'koa-router'
 const router = new KoaRouter({ prefix: '/api/v1/customer/auth' })
 
-const validate = require('../middleware/validate.middleware')
-const dbValidate = require('../middleware/dbValidate.middleware')
+import roles from '../constants/roles'
+import auth2Middleware from '../middleware/auth2.middleware'
 
-const { emailValidator, passwordValidator, firstNameValidator, confirmPasswordValidator, lastNameValidator } = require('../validators/auth.validator')
+import validate from '../middleware/validate.middleware'
+import dbValidate from '../middleware/dbValidate.middleware'
 
-const { emailExistValidator, emailDoesntExistValidator } = require('../db.validators/customerAuth.db.validator')
-const { cityValidator, stateValidator, countryValidator, storeLinkValidator } = require('../validators/store.validator')
-const { loginController, signupController, signInController, verifyLoginLinkController } = require('../controller/customerAuth.controller')
-const auth2Middleware = require('../middleware/auth2.middleware')
-const roles = require('../constants/roles')
-const { storeLinkExist } = require('../db.validators/store.db.validator')
+import { emailValidator, passwordValidator, firstNameValidator, confirmPasswordValidator, lastNameValidator } from '../validators/auth.validator'
+
+import { emailExistValidator, emailDoesntExistValidator } from '../db.validators/customerAuth.db.validator'
+import { cityValidator, stateValidator, countryValidator, storeLinkValidator } from '../validators/store.validator'
+import { loginController, signupController, signInController, verifyLoginLinkController } from '../controller/customerAuth.controller'
+import { storeLinkExist } from '../db.validators/store.db.validator'
 
 
 router.post('/signin',
@@ -39,4 +40,4 @@ router.get('/verifyLoginLink',
 //     signupController
 // )
 
-module.exports = router
+export default router

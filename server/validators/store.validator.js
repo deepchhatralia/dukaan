@@ -1,6 +1,5 @@
-// { store_link, name, contact, isOpen, merchant_id, location }
+import { ObjectId } from "mongodb"
 
-const { ObjectId } = require("mongodb");
 
 const nameValidator = ({ name }) => {
     let err = null;
@@ -151,4 +150,4 @@ const storeIdValidator = ({ store_id }) => {
     return err;
 }
 
-module.exports = { nameValidator, storeLinkValidator, contactValidator, isOpenValidator, merchantIdValidator, cityValidator, stateValidator, countryValidator, storeIdValidator }
+export { nameValidator, storeLinkValidator, contactValidator, isOpenValidator, merchantIdValidator, cityValidator, stateValidator, countryValidator, storeIdValidator }

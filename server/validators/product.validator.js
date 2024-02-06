@@ -1,4 +1,5 @@
-const { ObjectId } = require("mongodb");
+import { ObjectId } from "mongodb"
+
 
 const categoryIdValidator = ({ category_id }) => {
     let err = null;
@@ -210,4 +211,4 @@ const imageLinkValidator = ({ img }) => {
 }
 
 
-module.exports = { categoryIdValidator, categoryNameValidator, productIdValidator, oldProductNameValidator, productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator }
+export { categoryIdValidator, categoryNameValidator, productIdValidator, oldProductNameValidator, productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator }

@@ -1,6 +1,6 @@
-const { ObjectId } = require("mongodb");
-const { findCategory } = require("../mongodb/category")
-const { findProduct, findProductByStore, findProductById } = require("../mongodb/product")
+import { ObjectId } from "mongodb"
+import { findCategory } from "../mongodb/category"
+import { findProduct, findProductByStore, findProductById } from "../mongodb/product"
 
 const categoryAlreadyExist = async (ctx) => {
     let err = null, filter;
@@ -96,4 +96,4 @@ const productIdExist = async (ctx) => {
     return err
 }
 
-module.exports = { categoryAlreadyExist, productNameAlreadyExist, productNameValidateForUpdate, productIdExist, categoryNameValidateForUpdate }
+export { categoryAlreadyExist, productNameAlreadyExist, productNameValidateForUpdate, productIdExist, categoryNameValidateForUpdate }

@@ -1,9 +1,11 @@
-require('dotenv').config()
-const { decodeJwt } = require('../service/jwtService');
-const { findStaffById } = require('../mongodb/staff');
-const { findCustomerById } = require('../mongodb/customer');
-const roles = require('../constants/roles');
-const { findInvitedStaff } = require('../mongodb/token');
+import dotenv from 'dotenv'
+import { decodeJwt } from '../service/jwtService'
+import { findStaffById } from '../mongodb/staff'
+import { findCustomerById } from '../mongodb/customer'
+import roles from '../constants/roles'
+import { findInvitedStaff } from '../mongodb/token'
+
+dotenv.config()
 
 const authMiddleware = async (ctx, next) => {
     const token = ctx.header['authorization']
@@ -58,4 +60,4 @@ const authMiddleware = async (ctx, next) => {
 
 }
 
-module.exports = authMiddleware
+export default authMiddleware

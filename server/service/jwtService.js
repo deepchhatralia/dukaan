@@ -1,4 +1,7 @@
-const jwt = require('jsonwebtoken')
+import dotenv from 'dotenv'
+dotenv.config()
+
+import jwt from 'jsonwebtoken'
 const SECRET_VALUE = process.env.ACCESS_TOKEN_SECRET_VALUE
 
 const generateJwt = (payload, expIn = "24h") => {
@@ -16,4 +19,4 @@ const decodeJwt = (token) => {
     }
 }
 
-module.exports = { generateJwt, decodeJwt }
+export { generateJwt, decodeJwt }

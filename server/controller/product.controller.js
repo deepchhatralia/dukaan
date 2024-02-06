@@ -1,5 +1,5 @@
-const { ObjectId } = require('mongodb')
-const { addProduct, deleteProductById, findProductByStore, updateProductById, findProductById, findActiveProducts, findProductByStoreLink, findProductByCategoryId } = require('../mongodb/product')
+import { ObjectId } from 'mongodb'
+import { addProduct, deleteProductById, findProductByStore, updateProductById, findProductById, findActiveProducts, findProductByStoreLink, findProductByCategoryId } from '../mongodb/product'
 
 const getProducts = async (ctx) => {
     const storeId = ctx.user.store_id
@@ -129,4 +129,4 @@ const updateProduct = async (ctx) => {
 
 }
 
-module.exports = { getProducts, getProduct, getCategoryProducts, getProductsByStoreLink, getActiveProducts, addProductController, deleteProduct, updateProduct }
+export { getProducts, getProduct, getCategoryProducts, getProductsByStoreLink, getActiveProducts, addProductController, deleteProduct, updateProduct }

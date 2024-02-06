@@ -1,4 +1,4 @@
-const { findCustomerByEmail } = require("../mongodb/customer");
+import { findCustomerByEmail } from "../mongodb/customer"
 
 const emailExistValidator = async (ctx) => {
     const email = ctx.request.body.email.trim()
@@ -29,4 +29,4 @@ const emailDoesntExistValidator = async (ctx) => {
     return null;
 }
 
-module.exports = { emailExistValidator, emailDoesntExistValidator }
+export { emailExistValidator, emailDoesntExistValidator }

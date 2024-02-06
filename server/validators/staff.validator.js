@@ -1,4 +1,4 @@
-const roles = require("../constants/roles");
+import roles from "../constants/roles"
 
 const staffRoleValidator = ({ role }) => {
     let err = null;
@@ -20,4 +20,4 @@ const staffRoleValidator = ({ role }) => {
     return err;
 }
 
-module.exports = { staffRoleValidator }
+export { staffRoleValidator }

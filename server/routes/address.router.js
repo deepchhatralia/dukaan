@@ -1,16 +1,14 @@
-const KoaRouter = require('koa-router')
+import KoaRouter from 'koa-router'
 const router = new KoaRouter({ prefix: '/api/v1/customer/address' })
 
-const authMiddleware = require('../middleware/auth.middleware')
-const validate = require('../middleware/validate.middleware')
+import roles from '../constants/roles'
+import auth2Middleware from '../middleware/auth2.middleware'
+import validate from '../middleware/validate.middleware'
 
-const { cityValidator, stateValidator, countryValidator } = require('../validators/store.validator')
-const { addressValidator, addressIdValidator } = require('../validators/address.validator')
+import { cityValidator, stateValidator, countryValidator } from '../validators/store.validator'
+import { addressValidator, addressIdValidator } from '../validators/address.validator'
 
-const { getAddressController, addAddressController, deleteAddressController, updateAddressController } = require('../controller/address.controller')
-const allowedRoles = require('../middleware/role.middleware')
-const roles = require('../constants/roles')
-const auth2Middleware = require('../middleware/auth2.middleware')
+import { getAddressController, addAddressController, deleteAddressController, updateAddressController } from '../controller/address.controller'
 
 
 router.get('/',
@@ -37,4 +35,4 @@ router.delete('/deleteAddress',
     deleteAddressController
 )
 
-module.exports = router
+export default router

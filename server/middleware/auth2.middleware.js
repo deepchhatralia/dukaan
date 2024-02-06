@@ -1,6 +1,6 @@
-const { findInvitedStaff } = require("../mongodb/token");
-const { findUserByEmail } = require("../mongodb/user");
-const { decodeJwt } = require("../service/jwtService");
+import { findInvitedStaff } from "../mongodb/token"
+import { findUserByEmail } from "../mongodb/user"
+import { decodeJwt } from "../service/jwtService"
 
 const auth2Middleware = (roles) => {
     return async (ctx, next) => {
@@ -24,14 +24,7 @@ const auth2Middleware = (roles) => {
             return
         }
 
-        let dbUser;
-
-        // if (user?.isInvited) {
-        //     dbUser = await findInvitedStaff({ email: user.email })
-        // } else {
-
-        // }
-        dbUser = await findUserByEmail(user.email)
+        const dbUser = await findUserByEmail(user.email)
 
         if (!dbUser) {
             ctx.body = { success: false, msg: "User doesnt exist" }
@@ -45,4 +38,4 @@ const auth2Middleware = (roles) => {
 
 }
 
-module.exports = auth2Middleware
+export default auth2Middleware

@@ -1,6 +1,6 @@
-const { findStaffByEmail } = require("../mongodb/staff");
-const { findInvitedStaff } = require("../mongodb/token");
-const { comparePassword } = require("../service/passwordService");
+import { findStaffByEmail } from "../mongodb/staff"
+import { findInvitedStaff } from "../mongodb/token"
+import { comparePassword } from "../service/passwordService"
 
 const emailDoesntExistValidator = async (ctx) => {
     let err = null;
@@ -79,4 +79,4 @@ const storeExist = async ctx => {
     return err
 }
 
-module.exports = { emailDoesntExistValidator, emailExistValidator, unexpiredTokenExist, findStaffAndVerifyPassword, storeExist }
+export { emailDoesntExistValidator, emailExistValidator, unexpiredTokenExist, findStaffAndVerifyPassword, storeExist }

@@ -1,20 +1,16 @@
-const KoaRouter = require('koa-router')
+import KoaRouter from 'koa-router'
 const router = new KoaRouter({ prefix: '/api/v1/product' })
 
-const authMiddleware = require('../middleware/auth.middleware')
-const validate = require('../middleware/validate.middleware')
-const dbValidate = require('../middleware/dbValidate.middleware')
-const getMerchantStoreId = require('../middleware/store.middleware');
+import roles from '../constants/roles'
+import auth2Middleware from '../middleware/auth2.middleware'
+import validate from '../middleware/validate.middleware'
+import dbValidate from '../middleware/dbValidate.middleware'
 
-const { productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator, productIdValidator, oldProductNameValidator } = require('../validators/product.validator');
+import { productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator, productIdValidator, oldProductNameValidator } from '../validators/product.validator'
 
-const { getProducts, addProductController, deleteProduct, updateProduct, getProduct, getActiveProducts, getProductsByStoreLink } = require('../controller/product.controller');
-const { productNameAlreadyExist, productNameValidateForUpdate } = require('../db.validators/product.db.validator')
-const allowedRoles = require('../middleware/role.middleware')
-const roles = require('../constants/roles')
-const { storeLinkValidator } = require('../validators/store.validator')
-const auth2Middleware = require('../middleware/auth2.middleware')
-const { storeExist } = require('../db.validators/auth.db.validator')
+import { getProducts, addProductController, deleteProduct, updateProduct, getProduct, getActiveProducts, getProductsByStoreLink } from '../controller/product.controller'
+import { productNameAlreadyExist, productNameValidateForUpdate } from '../db.validators/product.db.validator'
+import { storeExist } from '../db.validators/auth.db.validator'
 
 
 // auth routes
@@ -55,4 +51,4 @@ router.delete('/deleteProduct',
     deleteProduct
 )
 
-module.exports = router
+export default router

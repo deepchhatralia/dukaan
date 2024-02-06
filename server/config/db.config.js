@@ -1,5 +1,8 @@
-require('dotenv').config()
-const MongoClient = require('mongodb').MongoClient
+
+import dotenv from 'dotenv'
+dotenv.config()
+import { MongoClient } from 'mongodb'
+
 
 const URI = process.env.MONGODB_URI;
 
@@ -19,4 +22,4 @@ const init = async (cb) => {
 
 const getDb = () => client;
 
-module.exports = { init, getDb }
+export { getDb, init }

@@ -1,5 +1,5 @@
-const { findInvitedStaff } = require("../mongodb/token");
-const { decodeJwt } = require("../service/jwtService");
+import { findInvitedStaff } from "../mongodb/token"
+import { decodeJwt } from "../service/jwtService"
 
 const verifyStaffToken = async (ctx) => {
     let err = null
@@ -43,4 +43,4 @@ const invitedStaffExists = async ctx => {
     return err
 }
 
-module.exports = { verifyStaffToken, invitedStaffExists }
+export { verifyStaffToken, invitedStaffExists }

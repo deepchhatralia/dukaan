@@ -1,4 +1,4 @@
-const { compareSync } = require("bcrypt");
+import { compareSync } from "bcrypt"
 
 const firstNameValidator = ({ fname }) => {
     let err = null;
@@ -110,4 +110,4 @@ const confirmPasswordValidator = ({ password, cpassword }) => {
     return err;
 }
 
-module.exports = { firstNameValidator, lastNameValidator, emailValidator, passwordValidator, confirmPasswordValidator, oldPasswordValidator }
+export { firstNameValidator, lastNameValidator, emailValidator, passwordValidator, confirmPasswordValidator, oldPasswordValidator }

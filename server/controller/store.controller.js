@@ -1,7 +1,6 @@
-const { ObjectId } = require("mongodb");
-const { insertStore, findStoreByMerchantId, deleteStoreById, updateStoreById, findStoreById } = require("../mongodb/store");
-const { getObjectId } = require("../service");
-const { updateStaff } = require("../mongodb/staff");
+import { ObjectId } from "mongodb";
+import { insertStore, findStoreByMerchantId, deleteStoreById, updateStoreById, findStoreById } from "../mongodb/store"
+import { updateStaff } from "../mongodb/staff"
 
 const addStore = async (ctx) => {
     const { _id: userId } = ctx.user
@@ -83,4 +82,4 @@ const deleteStore = async (ctx) => {
     ctx.body = { success: false, msg: "Store Id doesnt exist" }
 }
 
-module.exports = { addStore, getMerchantStore, getMerchantStoreById, updateStore, deleteStore }
+export { addStore, getMerchantStore, getMerchantStoreById, updateStore, deleteStore }

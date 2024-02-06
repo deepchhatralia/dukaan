@@ -1,12 +1,11 @@
 require('dotenv').config()
-const { ObjectId } = require('mongodb')
-const roles = require("../constants/roles")
-const { insertCustomer } = require("../mongodb/customer")
-const { findUserByEmail, insertUser, updateUser } = require('../mongodb/user')
-const { sendMail } = require('../service')
-const { generateJwt } = require("../service/jwtService")
-const { hashPassword, comparePassword } = require("../service/passwordService")
-const { findStoreByLink } = require('../mongodb/store')
+import { ObjectId } from "mongodb"
+import roles from '../constants/roles'
+import { insertCustomer } from "../mongodb/customer"
+import { updateUser } from '../mongodb/user'
+import { sendMail } from '../service'
+import { generateJwt } from "../service/jwtService"
+import { hashPassword, comparePassword } from "../service/passwordService"
 
 
 const signInController = async ctx => {
@@ -76,7 +75,7 @@ const signupController = async ctx => {
     }
 }
 
-module.exports = {
+export {
     loginController, signupController,
     signInController, verifyLoginLinkController
 }

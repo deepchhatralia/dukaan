@@ -1,4 +1,4 @@
-const { ObjectId } = require("mongodb");
+import { ObjectId } from "mongodb"
 
 const addressValidator = ({ address }) => {
     let err = null;
@@ -42,4 +42,4 @@ const addressIdValidator = ({ address_id }) => {
     return err;
 }
 
-module.exports = { addressValidator, addressIdValidator }
+export { addressValidator, addressIdValidator }

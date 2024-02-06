@@ -1,6 +1,6 @@
-const sendMail = require('./sendMail')
-const passwordService = require('./passwordService')
-const jwtService = require('./jwtService')
-const getObjectId = require('./getObjectId')
+import sendMail from './sendMail'
+import { hashPassword, comparePassword } from './passwordService'
+import { generateJwt, decodeJwt } from './jwtService'
+import getObjectId from './getObjectId'
 
-module.exports = { sendMail, passwordService, jwtService, getObjectId }
+export { sendMail, hashPassword, comparePassword, generateJwt, decodeJwt, getObjectId }

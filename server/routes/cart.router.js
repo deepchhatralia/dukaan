@@ -1,43 +1,39 @@
-const KoaRouter = require('koa-router');
-const router = new KoaRouter({ prefix: "/api/v1/customer/cart" });
-const roles = require('../constants/roles');
+import KoaRouter from 'koa-router'
+const router = new KoaRouter({ prefix: "/api/v1/customer/cart" })
 
-const authMiddleware = require('../middleware/auth.middleware');
-const allowedRoles = require('../middleware/role.middleware');
-const validate = require('../middleware/validate.middleware');
+import roles from '../constants/roles'
+import auth2Middleware from '../middleware/auth2.middleware'
+import validate from '../middleware/validate.middleware'
 
-const { productIdValidator } = require('../validators/product.validator');
-const { getCustomerCart, addToCartController, removeCartItem } = require('../controller/cart.controller');
-const { customerIdValidator } = require('../validators/customer.validator');
-const { quantityValidator } = require('../validators/cart.validator');
-const dbValidate = require('../middleware/dbValidate.middleware');
-const { productIdExist } = require('../db.validators/product.db.validator');
-const getMerchantStoreId = require('../middleware/store.middleware');
+import authMiddleware from '../middleware/auth.middleware'
+import allowedRoles from '../middleware/role.middleware'
+
+import { productIdValidator } from '../validators/product.validator'
+import { getCustomerCart, addToCartController, removeCartItem } from '../controller/cart.controller'
+import { customerIdValidator } from '../validators/customer.validator'
+import { quantityValidator } from '../validators/cart.validator'
+import dbValidate from '../middleware/dbValidate.middleware'
+import { productIdExist } from '../db.validators/product.db.validator'
 
 
 
 router.get("/",
-    authMiddleware,
-    allowedRoles([roles.CUSTOMER]),
+    auth2Middleware([roles.CUSTOMER]),
     getCustomerCart
 );
 
 router.post('/addToCart',
-    authMiddleware,
-    allowedRoles([roles.CUSTOMER]),
-    // getMerchantStoreId,
+    auth2Middleware([roles.CUSTOMER]),
     validate([productIdValidator, quantityValidator]),
     dbValidate([productIdExist]),
     addToCartController
 )
 
 router.patch('/removeItem',
-    authMiddleware,
-    allowedRoles([roles.CUSTOMER]),
-    // getMerchantStoreId,
+    auth2Middleware([roles.CUSTOMER]),
     validate([productIdValidator]),
     // dbValidate([productIdExist]),
     removeCartItem
 )
 
-module.exports = router
+export default router

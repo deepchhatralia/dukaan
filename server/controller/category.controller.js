@@ -1,5 +1,5 @@
-const { ObjectId } = require("mongodb")
-const { addCategory, deleteCategoryById, updateCategoryById, findCategoryByStore } = require("../mongodb/category")
+import { ObjectId } from "mongodb"
+import { addCategory, deleteCategoryById, updateCategoryById, findCategoryByStore } from "../mongodb/category"
 
 const getCategories = async ctx => {
     const storeId = ctx.user.store_id
@@ -55,4 +55,4 @@ const updateCategory = async (ctx) => {
     ctx.body = { success: true, data: resp, msg: "Updated" }
 }
 
-module.exports = { getCategories, addCategoryController, deleteCategory, updateCategory }
+export { getCategories, addCategoryController, deleteCategory, updateCategory }

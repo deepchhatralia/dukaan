@@ -1,10 +1,11 @@
-const client = require('../config/db.config');
-const { ObjectId } = require("mongodb");
+import client from '../config/db.config';
+import { ObjectId } from "mongodb";
 
-const { getCustomerCartById, addToCart, clearCart, removeItem } = require("../mongodb/cart")
+import { getCustomerCartById, addToCart, clearCart, removeItem } from "../mongodb/cart"
 
 const getCustomerCart = async ctx => {
     const customer_id = ctx.user._id
+    const store_id = ctx.user.store_id
 
     const resp = await getCustomerCartById(customer_id)
 
@@ -47,4 +48,4 @@ const clearCartController = async ctx => {
     ctx.body = { success: true, data: resp }
 }
 
-module.exports = { getCustomerCart, addToCartController, removeCartItem, clearCartController }
+export { getCustomerCart, addToCartController, removeCartItem, clearCartController }
