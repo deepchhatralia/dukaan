@@ -25,7 +25,7 @@ const storeLinkValidator = ({ store_link }) => {
     let err = null;
 
     if (!store_link) {
-        err = { message: "Enter store link", field: "store_link" }
+        err = { message: "Specify store link", field: "store_link" }
         return err
     }
     store_link = store_link.trim()

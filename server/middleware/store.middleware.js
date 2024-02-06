@@ -44,4 +44,17 @@ const getStoreLink = (ctx, next) => {
     next()
 }
 
-export default getMerchantStoreId
+const getStoreId = async (ctx, next) => {
+    const store_link = ctx.request.body.store_link.trim()
+
+    const store = await findStoreByLink(store_link)
+
+    if (!store) {
+        return ctx.body = { success: "false", msg: "Store doesnt exist" }
+    }
+    ctx.user["store_id"] = store._id
+
+    await next()
+}
+
+export { getStoreId }
