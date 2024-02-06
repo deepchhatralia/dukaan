@@ -2,7 +2,7 @@
   "main": "app",
   "scripts": {
     "build": "babel . --out-dir dist --ignore node_modules",
-    "start": "npm run build && nodemon dist/app.js"
+    "start": "nodemon --exec babel-node app.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -20,7 +20,9 @@
   "devDependencies": {
     "@babel/cli": "^7.23.9",
     "@babel/core": "^7.23.9",
+    "@babel/node": "^7.23.9",
     "@babel/plugin-syntax-top-level-await": "^7.14.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.23.3",
     "@babel/preset-env": "^7.23.9"
   }
 }
