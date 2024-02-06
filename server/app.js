@@ -2,7 +2,6 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 import koa from 'koa'
-import json from 'koa-json'
 import bodyParser from 'koa-bodyparser'
 import cors from 'koa-cors'
 
@@ -15,13 +14,6 @@ import {
     authRouter, staffRouter, storeRouter, categoryRouter, productRouter,
     customerRouter, addressRouter, cartRouter, orderRouter
 } from './routes'
-
-import KoaRouter from 'koa-router'
-const router = new KoaRouter()
-
-console.log(router.get)
-
-router.get('/', ctx => ctx.body = "Hello World")
 
 app.use(cors())
 app.use(bodyParser())
