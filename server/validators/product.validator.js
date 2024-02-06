@@ -170,6 +170,11 @@ const priceValidator = ({ price }) => {
         return err
     }
 
+    if (typeof price !== 'number') {
+        err = { message: 'Invalid price', field: 'price' };
+        return err
+    }
+
     return err
 }
 
@@ -177,6 +182,11 @@ const discountedPriceValidator = ({ discounted_price, price }) => {
     let err = null;
 
     if (!discounted_price) {
+        return err
+    }
+
+    if (typeof discounted_price !== 'number') {
+        err = { message: 'Invalid discount price', field: 'price' };
         return err
     }
 

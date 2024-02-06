@@ -9,68 +9,48 @@ const getMerchantStoreId = require('../middleware/store.middleware');
 const { productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator, productIdValidator, oldProductNameValidator } = require('../validators/product.validator');
 
 const { getProducts, addProductController, deleteProduct, updateProduct, getProduct, getActiveProducts, getProductsByStoreLink } = require('../controller/product.controller');
-const { productNameAlreadyExist } = require('../db.validators/product.db.validator')
+const { productNameAlreadyExist, productNameValidateForUpdate } = require('../db.validators/product.db.validator')
 const allowedRoles = require('../middleware/role.middleware')
 const roles = require('../constants/roles')
 const { storeLinkValidator } = require('../validators/store.validator')
-
-
-// seperate route to get products  because it does not require token (without login or signup)
-// router.get('/',
-//     validate([storeLinkValidator]),
-//     dbValidate(),
-//     getProductsByStoreLink
-// )
-
-// no auth routes
-// router.get('/c/',
-//     // getNoAuthActiveProducts
-//     getProducts
-// )
-
+const auth2Middleware = require('../middleware/auth2.middleware')
+const { storeExist } = require('../db.validators/auth.db.validator')
 
 
 // auth routes
 router.get('/',
-    authMiddleware,
-    getMerchantStoreId,
+    auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
     getProducts
 )
 
 router.get('/getActiveProducts',
-    authMiddleware,
-    getMerchantStoreId,
-    validate([productIdValidator]),
+    auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
     getActiveProducts
 )
 
 router.get('/:productId',
-    // authMiddleware,
-    getMerchantStoreId,
+    auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
     validate([productIdValidator]),
     getProduct
 )
 
 
 router.post('/addProduct',
-    authMiddleware,
-    getMerchantStoreId,
+    auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
     validate([productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator]),
-    dbValidate([productNameAlreadyExist]),
+    dbValidate([storeExist, productNameAlreadyExist]),
     addProductController
 )
 
 router.put('/updateProduct',
-    authMiddleware,
-    getMerchantStoreId,
-    validate([oldProductNameValidator, productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator, productIdValidator]),
-    dbValidate([productNameAlreadyExist]),
+    auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
+    validate([productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator, productIdValidator]),
+    dbValidate([productNameValidateForUpdate]),
     updateProduct
 )
 
 router.delete('/deleteProduct',
-    authMiddleware,
-    getMerchantStoreId,
+    auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
     validate([productIdValidator]),
     deleteProduct
 )

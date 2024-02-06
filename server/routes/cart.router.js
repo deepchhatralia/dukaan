@@ -27,7 +27,7 @@ router.post('/addToCart',
     allowedRoles([roles.CUSTOMER]),
     // getMerchantStoreId,
     validate([productIdValidator, quantityValidator]),
-    // dbValidate([productIdExist]),
+    dbValidate([productIdExist]),
     addToCartController
 )
 

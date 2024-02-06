@@ -1,13 +1,8 @@
 
-const client = require('../config/db.config')
-const User = require('../model/User')
-const bcrypt = require('bcrypt')
-const nodemailer = require('nodemailer')
-
 const { sendMail, passwordService: { hashPassword, comparePassword }, jwtService: { generateJwt, decodeJwt } } = require('../service')
 
 const { findStaffByEmail, insertStaff, updateStaff } = require('../mongodb/staff')
-const { deleteToken, updateToken, findToken } = require('../mongodb/token')
+const { deleteInvitedStaff, updateInvitedStaff, findInvitedStaff } = require('../mongodb/token')
 const roles = require('../constants/roles')
 
 const dbName = process.env.DB_NAME
@@ -41,9 +36,7 @@ const signupController = async ctx => {
 
     const hashedPassword = await hashPassword(password);
 
-    const user = new User(fname, lname, email, hashedPassword)
-
-    ack = await insertStaff(user.getObj());
+    ack = await insertStaff({ firstName: fname, lastName: lname, email, password: hashedPassword, store_id: null, role: roles.MERCHANT });
 
     const token = generateJwt({ _id: ack.insertedId, email, role: roles.MERCHANT });
 
@@ -71,15 +64,15 @@ const changePasswordController = async (ctx) => {
 const sendResetLink = async ctx => {
     const email = ctx.request.body.email.trim();
 
-    const resetPassToken = generateJwt({ email })
+    const resetPassToken = generateJwt({ email, role: 10 })
     const resetLink = `${process.env.RESET_LINK}/resetPassword?token=${resetPassToken}`
 
     sendMail('forstudycoding@gmail.com', "Reset password link", "Change password", resetLink)
 
     // fire update query with upsert 
-    // await updateToken({ email }, { $set: { token: resetPassToken, expiresIn: Date.now() + 3600000 } }, { upsert: true })
+    // await updateInvitedStaff({ email }, { $set: { token: resetPassToken, expiresIn: Date.now() + 3600000 } }, { upsert: true })
 
-    await updateToken({ email }, { $set: { expiresIn: Date.now() + 3600000 } }, { upsert: true })
+    await updateInvitedStaff({ email }, { $set: { expiresIn: Date.now() + 3600000 } }, { upsert: true })
 
     ctx.body = { success: true, msg: "Email sent" }
 }
@@ -95,7 +88,7 @@ const verifyResetToken = async (ctx) => {
 
     await updateStaff({ email: obj.email }, { $set: { password: hashedPassword } })
 
-    await deleteToken({ email: obj.email })
+    await deleteInvitedStaff({ email: obj.email })
 
     ctx.body = { success: true, msg: "Password changed" }
 }

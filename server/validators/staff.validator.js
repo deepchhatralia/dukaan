@@ -8,6 +8,11 @@ const staffRoleValidator = ({ role }) => {
         return err
     }
 
+    if (typeof role !== 'number') {
+        err = { message: 'Invalid role', field: 'role' };
+        return err
+    }
+
     if (role < roles.ADMIN || role > roles.STAFF) {
         err = { message: "Invalid role", field: "role" }
         return err;

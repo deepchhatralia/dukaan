@@ -2,7 +2,7 @@ const { ObjectId } = require("mongodb")
 const { addCategory, deleteCategoryById, updateCategoryById, findCategoryByStore } = require("../mongodb/category")
 
 const getCategories = async ctx => {
-    const storeId = ctx.user.storeId
+    const storeId = ctx.user.store_id
 
     const resp = await findCategoryByStore(storeId)
 
@@ -17,7 +17,7 @@ const addCategoryController = async ctx => {
     let { category_name } = ctx.request.body
 
     category_name = category_name.trim()
-    store_id = ctx.user.storeId
+    store_id = ctx.user.store_id
 
     // ctx.body = store_id
     const resp = await addCategory({ category_name, store_id: new ObjectId(store_id) })
@@ -30,7 +30,7 @@ const deleteCategory = async ctx => {
 
     category_id = category_id.trim()
 
-    const resp = await deleteCategoryById(category_id, ctx.user.storeId)
+    const resp = await deleteCategoryById(category_id, ctx.user.store_id)
 
     if (resp.deletedCount) {
         ctx.body = { success: true, msg: "Deleted" }
@@ -40,7 +40,7 @@ const deleteCategory = async ctx => {
 }
 
 const updateCategory = async (ctx) => {
-    let { old_category_name, category_id, category_name } = ctx.request.body;
+    let { category_id, category_name } = ctx.request.body;
 
     category_id = category_id.trim()
     category_name = category_name.trim()

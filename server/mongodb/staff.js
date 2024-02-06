@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 const client = require('../config/db.config');
 
 const dbName = process.env.DB_NAME
-const collectionName = 'staff'
+const collectionName = 'user'
 
 const findStaffById = async (_id) => {
     return await client.getDb().db(dbName).collection(collectionName).findOne({ _id: new ObjectId(_id) });

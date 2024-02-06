@@ -56,6 +56,21 @@ const emailValidator = ({ email }) => {
     return err;
 }
 
+const oldPasswordValidator = ({ password, oldPassword }) => {
+    let err = null
+
+    if (!oldPassword) {
+        err = { success: false, msg: "Specify old password" }
+        return err;
+    }
+
+    if (oldPassword === password) {
+        err = { success: false, msg: "New password cannot be same as old password" }
+        return err;
+    }
+    return null;
+}
+
 const passwordValidator = ({ password }) => {
     let err = null
 
@@ -95,4 +110,4 @@ const confirmPasswordValidator = ({ password, cpassword }) => {
     return err;
 }
 
-module.exports = { firstNameValidator, lastNameValidator, emailValidator, passwordValidator, confirmPasswordValidator }
+module.exports = { firstNameValidator, lastNameValidator, emailValidator, passwordValidator, confirmPasswordValidator, oldPasswordValidator }

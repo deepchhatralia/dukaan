@@ -3,7 +3,7 @@ const { decodeJwt } = require('../service/jwtService');
 const { findStaffById } = require('../mongodb/staff');
 const { findCustomerById } = require('../mongodb/customer');
 const roles = require('../constants/roles');
-const { findToken } = require('../mongodb/token');
+const { findInvitedStaff } = require('../mongodb/token');
 
 const authMiddleware = async (ctx, next) => {
     const token = ctx.header['authorization']
@@ -13,10 +13,15 @@ const authMiddleware = async (ctx, next) => {
         return;
     }
 
+    const user = decodeJwt(token);
+
+    if (!user) {
+        ctx.status = 404
+        ctx.body = { success: false, msg: "Authentication error 1" }
+        return
+    }
 
     try {
-        const user = decodeJwt(token);
-
         // ctx.user = user
 
         if (!user) {
@@ -30,7 +35,7 @@ const authMiddleware = async (ctx, next) => {
             dbUser = await findCustomerById(user._id);
         }
         else if (user?.isInvited) {
-            dbUser = await findToken({ email: user.email });
+            dbUser = await findInvitedStaff({ email: user.email });
         }
         else {
             dbUser = await findStaffById(user._id);

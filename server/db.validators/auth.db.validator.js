@@ -1,5 +1,5 @@
 const { findStaffByEmail } = require("../mongodb/staff");
-const { findToken } = require("../mongodb/token");
+const { findInvitedStaff } = require("../mongodb/token");
 const { comparePassword } = require("../service/passwordService");
 
 const emailDoesntExistValidator = async (ctx) => {
@@ -20,9 +20,10 @@ const emailDoesntExistValidator = async (ctx) => {
 const emailExistValidator = async (ctx) => {
     let err = null;
 
-    const email = ctx.request.body.email;
+    const email = ctx.request.body.email.trim()
 
     let ack = await findStaffByEmail(email)
+    console.log(ack)
 
     if (ack) {
         err = { success: false, msg: "Email already exist" }
@@ -37,7 +38,7 @@ const unexpiredTokenExist = async (ctx) => {
 
     // const { token, password } = ctx.user
 
-    const temp = await findToken({ email: ctx.user.email, expiresIn: { $gt: Date.now() } })
+    const temp = await findInvitedStaff({ email: ctx.user.email, expiresIn: { $gt: Date.now() } })
 
     if (!temp) {
         err = { success: false, msg: "Authorization denied" }
@@ -68,5 +69,14 @@ const findStaffAndVerifyPassword = async (ctx) => {
     return err
 }
 
+const storeExist = async ctx => {
+    let err = null
 
-module.exports = { emailDoesntExistValidator, emailExistValidator, unexpiredTokenExist, findStaffAndVerifyPassword }
+    if (!ctx.user?.store_id) {
+        err = { success: false, msg: "First add store" }
+        return err
+    }
+    return err
+}
+
+module.exports = { emailDoesntExistValidator, emailExistValidator, unexpiredTokenExist, findStaffAndVerifyPassword, storeExist }

@@ -8,35 +8,37 @@ const { nameValidator, contactValidator, isOpenValidator, merchantIdValidator, s
 const { storeLinkExistValidator, merchantIdExistInUser, storeAlreadyExist } = require('../db.validators/store.db.validator')
 const { addStore, getMerchantStore, deleteStore, updateStore, getMerchantStoreById } = require('../controller/store.controller')
 const authMiddleware = require('../middleware/auth.middleware')
+const auth2Middleware = require('../middleware/auth2.middleware')
+const roles = require('../constants/roles')
 
 
 // get all stores of merchant 
 router.post('/',
-    authMiddleware,
+    auth2Middleware,
     getMerchantStore
 )
 
 router.get('/:storeId',
-    authMiddleware,
+    auth2Middleware,
     getMerchantStoreById
 )
 
 router.post('/addStore',
-    authMiddleware,
+    auth2Middleware([roles.MERCHANT]),
     validate([nameValidator, storeLinkValidator, contactValidator, isOpenValidator, cityValidator, stateValidator, countryValidator]),
     dbValidate([storeAlreadyExist, storeLinkExistValidator]),
     addStore
 )
 
 router.put('/updateStore',
-    authMiddleware,
-    validate([storeIdValidator, nameValidator, contactValidator, isOpenValidator, cityValidator, stateValidator, countryValidator]),
+    auth2Middleware,
+    validate([storeLinkValidator, storeIdValidator, nameValidator, contactValidator, isOpenValidator, cityValidator, stateValidator, countryValidator]),
     dbValidate([storeLinkExistValidator]),
     updateStore
 )
 
 router.delete('/deleteStore',
-    authMiddleware,
+    auth2Middleware,
     validate([storeIdValidator]),
     deleteStore
 )

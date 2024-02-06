@@ -6,8 +6,6 @@ const dbName = process.env.DB_NAME
 const collectionName = 'cart'
 
 const getCustomerCartById = async customerId => {
-    // return await client.getDb().db(dbName).collection(collectionName).findOne({ customer_id: new ObjectId(customerId) });
-
     return await client.getDb().db(dbName).collection(collectionName).aggregate([
         {
             $match: { customer_id: new ObjectId(customerId) }

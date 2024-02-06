@@ -6,6 +6,11 @@ const quantityValidator = ({ qty }) => {
         return err
     }
 
+    if (typeof qty !== 'number') {
+        err = { message: "Invalid quantity", field: "qty" }
+        return err
+    }
+
     if (qty < 1) {
         err = { message: 'Minimum 1 quantity required', field: 'qty' };
         return err

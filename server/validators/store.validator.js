@@ -34,7 +34,7 @@ const storeLinkValidator = ({ store_link }) => {
         err = { message: "Minimum 3 characters required", field: "store_link" }
         return err
     }
-    if (name.length > 20) {
+    if (store_link.length > 20) {
         err = { message: "Maximum 20 characters allowed", field: "store_link" }
         return err
     }
@@ -49,8 +49,10 @@ const contactValidator = ({ contact }) => {
         err = { message: "Enter contact", field: "contact" }
         return err
     }
-    contact = Number(contact)
-
+    if (typeof contact !== 'number') {
+        err = { message: "Invalid contact number", field: "contact" }
+        return err
+    }
     if (!contact) {
         err = { message: "Invalid contact number", field: "contact" }
         return err

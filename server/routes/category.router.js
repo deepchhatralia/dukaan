@@ -9,39 +9,34 @@ const { categoryNameValidator, categoryIdValidator } = require('../validators/pr
 const { storeIdValidator } = require('../validators/store.validator');
 const { getCategories, deleteCategory, addCategoryController, updateCategory } = require('../controller/category.controller');
 const { storeIdExist } = require('../db.validators/store.db.validator');
-const { categoryAlreadyExist } = require('../db.validators/product.db.validator');
+const { categoryAlreadyExist, categoryNameValidateForUpdate } = require('../db.validators/product.db.validator');
 const getMerchantStoreId = require('../middleware/store.middleware');
 const allowedRoles = require('../middleware/role.middleware');
 const roles = require('../constants/roles');
+const auth2Middleware = require('../middleware/auth2.middleware');
+const { storeExist } = require('../db.validators/auth.db.validator');
 
 router.get('/',
-    authMiddleware,
-    getMerchantStoreId,
+    auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
     getCategories
 )
 
 router.post('/addCategory',
-    authMiddleware,
-    allowedRoles([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
-    getMerchantStoreId,
+    auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
     validate([categoryNameValidator]),
-    dbValidate([categoryAlreadyExist]),
+    dbValidate([storeExist, categoryAlreadyExist]),
     addCategoryController
 )
 
 router.put('/updateCategory',
-    authMiddleware,
-    allowedRoles([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
-    getMerchantStoreId,
+    auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
     validate([categoryIdValidator, categoryNameValidator]),
-    dbValidate([categoryAlreadyExist]),
+    dbValidate([categoryNameValidateForUpdate]),
     updateCategory
 )
 
 router.delete('/deleteCategory',
-    authMiddleware,
-    allowedRoles([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
-    getMerchantStoreId,
+    auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
     validate([categoryIdValidator]),
     deleteCategory
 )

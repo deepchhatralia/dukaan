@@ -21,16 +21,15 @@ const findProductById = async (product_id, storeId) => {
     return await client.getDb().db(dbName).collection(collectionName).findOne({ _id: new ObjectId(product_id), store_id: new ObjectId(storeId) });
 }
 
-const findProductByName = async (product_name, storeId) => {
-    return await client.getDb().db(dbName).collection(collectionName).findOne({ product_name, store_id: new ObjectId(storeId) });
+const findProduct = async (filter) => {
+    return await client.getDb().db(dbName).collection(collectionName).findOne(filter);
 }
 
 const findActiveProducts = async (storeId) => {
     return await client.getDb().db(dbName).collection(collectionName).find({ store_id: new ObjectId(storeId), isActive: true }).toArray();
 }
 
-const addProduct = async (productObject, store_id) => {
-    productObject["store_id"] = new ObjectId(store_id)
+const addProduct = async (productObject) => {
     return await client.getDb().db(dbName).collection(collectionName).insertOne(productObject);
 }
 
@@ -42,4 +41,4 @@ const updateProductById = async (product_id, storeId, productObject) => {
     return await client.getDb().db(dbName).collection(collectionName).findOneAndUpdate({ _id: new ObjectId(product_id), store_id: new ObjectId(storeId) }, { $set: { ...productObject } }, { returnDocument: 'after' })
 }
 
-module.exports = { findActiveProducts, findProductById, findProductByStoreLink, findProductByCategoryId, findProductByStore, findProductByName, addProduct, deleteProductById, updateProductById }
+module.exports = { findActiveProducts, findProductById, findProductByStoreLink, findProductByCategoryId, findProductByStore, findProduct, addProduct, deleteProductById, updateProductById }

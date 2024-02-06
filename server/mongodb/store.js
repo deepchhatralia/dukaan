@@ -15,6 +15,8 @@ const findStoreByMerchantId = async (userId) => {
 }
 
 const findStoreByLink = async (store_link) => {
+    // return await client.getDb().db(dbName).collection(collectionName).findOne({ store_link: { "$regex": `/^${store_link}$/i` } });
+
     return await client.getDb().db(dbName).collection(collectionName).findOne({ store_link });
 }
 

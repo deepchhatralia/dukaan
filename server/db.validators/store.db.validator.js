@@ -1,5 +1,5 @@
 const { findStaffById } = require("../mongodb/staff");
-const { findStoreByLink, findStoreById, findMerchantStore } = require("../mongodb/store");
+const { findStoreByLink, findStoreById, findStoreByMerchantId } = require("../mongodb/store");
 
 const storeLinkExistValidator = async (ctx) => {
     let err = null;
@@ -20,7 +20,7 @@ const storeAlreadyExist = async (ctx) => {
 
     const merchant_id = ctx.user._id;
 
-    const resp = await findMerchantStore(merchant_id);
+    const resp = await findStoreByMerchantId(merchant_id);
 
     if (resp) {
         err = { success: false, message: "1 store already exist" }
@@ -34,7 +34,7 @@ const storeIdExist = async (ctx) => {
 
     const merchant_id = ctx.user._id
 
-    const store_id = ctx.user.storeId;
+    const store_id = ctx.user.store_id;
 
     const resp = await findStoreById(store_id, merchant_id);
 
@@ -63,4 +63,18 @@ const merchantIdExistInUser = async (ctx) => {
     return err
 }
 
-module.exports = { storeLinkExistValidator, merchantIdExistInUser, storeIdExist, storeAlreadyExist }
+const storeLinkExist = async ctx => {
+    let err = null
+
+    const storeLink = ctx.request.body?.store_link
+
+    const store = await findStoreByLink(storeLink)
+
+    if (!store) {
+        err = { success: false, msg: "Store doesnt exist" }
+        return err
+    }
+    return err
+}
+
+module.exports = { storeLinkExistValidator, merchantIdExistInUser, storeIdExist, storeAlreadyExist, storeLinkExist }

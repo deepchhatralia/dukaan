@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb')
 const { addProduct, deleteProductById, findProductByStore, updateProductById, findProductById, findActiveProducts, findProductByStoreLink, findProductByCategoryId } = require('../mongodb/product')
 
 const getProducts = async (ctx) => {
-    const storeId = ctx.user.storeId
+    const storeId = ctx.user.store_id
 
     const resp = await findProductByStore(storeId)
 
@@ -41,7 +41,7 @@ const getProductsByStoreLink = async (ctx) => {
 const getProduct = async (ctx) => {
     const { productId } = ctx.params
 
-    const storeId = ctx.user.storeId
+    const storeId = ctx.user.store_id
 
     const resp = await findProductById(productId, storeId)
 
@@ -53,7 +53,7 @@ const getProduct = async (ctx) => {
 }
 
 const getActiveProducts = async (ctx) => {
-    const storeId = ctx.user.storeId
+    const storeId = ctx.user.store_id
 
     const resp = await findActiveProducts(storeId)
 
@@ -81,14 +81,14 @@ const getNoAuthActiveProducts = async (ctx) => {
 const addProductController = async (ctx) => {
     let { product_name, product_desc, product_stock, isActive, price, discounted_price, img, category_id } = ctx.request.body
 
-    const storeId = ctx.user.storeId
+    const storeId = ctx.user.store_id
 
     product_name = product_name.trim()
     product_desc = product_desc.trim()
     img = img.trim()
     category_id = category_id.trim()
 
-    const resp = await addProduct({ product_name, product_desc, product_stock, isActive, price, discounted_price, img, category_id: new ObjectId(category_id) }, storeId)
+    const resp = await addProduct({ product_name, product_desc, product_stock, isActive, price, discounted_price, img, category_id: new ObjectId(category_id), store_id: new ObjectId(storeId) })
 
     ctx.body = { success: true, msg: "Added" }
 }
@@ -98,7 +98,7 @@ const deleteProduct = async (ctx) => {
 
     product_id = product_id.trim()
 
-    const resp = await deleteProductById(product_id, ctx.user.storeId)
+    const resp = await deleteProductById(product_id, ctx.user.store_id)
 
     if (resp.deletedCount) {
         ctx.body = { success: true, msg: "Deleted" }
@@ -111,7 +111,7 @@ const deleteProduct = async (ctx) => {
 const updateProduct = async (ctx) => {
     let { product_id, product_name, product_desc, product_stock, isActive, price, discounted_price, img, category_id } = ctx.request.body
 
-    const storeId = ctx.user.storeId
+    const storeId = ctx.user.store_id
 
     product_name = product_name.trim()
     product_desc = product_desc.trim()
