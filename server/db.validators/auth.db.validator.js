@@ -1,5 +1,5 @@
 import { findStaffByEmail } from "../mongodb/staff"
-import { findInvitedStaff } from "../mongodb/token"
+import { findInvitedStaff } from "../mongodb/invitedStaff"
 import { comparePassword } from "../service/passwordService"
 
 const emailDoesntExistValidator = async (ctx) => {

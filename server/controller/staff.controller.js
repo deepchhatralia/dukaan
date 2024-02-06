@@ -3,7 +3,7 @@ const sendMail = require('../service/sendMail')
 import { generateJwt, decodeJwt } from '../service/jwtService'
 import { hashPassword } from '../service/passwordService'
 import { findStaffByEmail, insertStaff } from '../mongodb/staff'
-import { updateInvitedStaff, findInvitedStaff, deleteInvitedStaff } from '../mongodb/token'
+import { updateInvitedStaff, findInvitedStaff, deleteInvitedStaff } from '../mongodb/invitedStaff'
 import { ObjectId } from 'mongodb'
 
 const dbName = process.env.DB_NAME

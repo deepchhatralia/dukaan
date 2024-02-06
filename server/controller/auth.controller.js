@@ -2,7 +2,7 @@
 import { sendMail, hashPassword, comparePassword, generateJwt, decodeJwt } from '../service'
 
 import { findStaffByEmail, insertStaff, updateStaff } from '../mongodb/staff'
-import { deleteInvitedStaff, updateInvitedStaff, findInvitedStaff } from '../mongodb/token'
+import { deleteInvitedStaff, updateInvitedStaff, findInvitedStaff } from '../mongodb/invitedStaff'
 import roles from '../constants/roles'
 
 

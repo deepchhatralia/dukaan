@@ -3,7 +3,7 @@ import { decodeJwt } from '../service/jwtService'
 import { findStaffById } from '../mongodb/staff'
 import { findCustomerById } from '../mongodb/customer'
 import roles from '../constants/roles'
-import { findInvitedStaff } from '../mongodb/token'
+import { findInvitedStaff } from '../mongodb/invitedStaff'
 
 dotenv.config()
 

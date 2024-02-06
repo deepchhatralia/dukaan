@@ -1,4 +1,4 @@
-import { findInvitedStaff } from "../mongodb/token"
+import { findInvitedStaff } from "../mongodb/invitedStaff"
 import { findUserByEmail } from "../mongodb/user"
 import { decodeJwt } from "../service/jwtService"
 

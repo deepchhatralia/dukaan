@@ -1,4 +1,4 @@
-import { findInvitedStaff } from "../mongodb/token"
+import { findInvitedStaff } from "../mongodb/invitedStaff"
 import { decodeJwt } from "../service/jwtService"
 
 const verifyStaffToken = async (ctx) => {
