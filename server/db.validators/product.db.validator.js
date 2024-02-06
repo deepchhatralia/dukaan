@@ -24,14 +24,14 @@ const categoryNameValidateForUpdate = async (ctx) => {
     let err = null, filter;
     let { category_id, category_name } = ctx.request.body
 
-    category_id = new ObjectId(category_id.trim())
+    category_id = category_id.trim()
     category_name = category_name.trim()
     const storeId = ctx.user.store_id;
 
     // const x = await findCategory({ _id: new ObjectId(category_id), store_id: new ObjectId(storeId) })
 
     const regex = new RegExp(category_id)
-    filter = { $and: [{ store_id: new ObjectId(storeId) }, { category_name }, { _id: { $not: regex } }] }
+    filter = { $and: [{ store_id: new ObjectId(storeId) }, { category_name }, { _id: { $ne: new ObjectId(category_id) } }] }
 
     const resp = await findCategory(filter)
 
@@ -65,12 +65,13 @@ const productNameValidateForUpdate = async (ctx) => {
     let err = null, filter;
     let { product_id, product_name } = ctx.request.body
 
-    product_id = new ObjectId(product_id.trim())
+    product_id = product_id.trim()
     product_name = product_name.trim()
     const storeId = ctx.user.store_id;
 
     const regex = new RegExp(product_id)
-    filter = { $and: [{ store_id: new ObjectId(storeId) }, { product_name }, { _id: { $not: regex } }] }
+    filter = { $and: [{ store_id: new ObjectId(storeId) }, { product_name }, { _id: { $ne: new ObjectId(product_id) } }] }
+
 
     const resp = await findProduct(filter)
 
