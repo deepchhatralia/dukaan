@@ -16,9 +16,7 @@ const signInController = async ctx => {
 
     const loginLink = `${process.env.LOGIN_LINK}/signin?token=${token}`
 
-
-
-    await updateUser({ email: inputEmail }, { $set: { role: roles.CUSTOMER, store_id: new ObjectId(store._id) } }, { upsert: true })
+    await updateUser({ email: inputEmail }, { $set: { role: roles.CUSTOMER, store_id: null } }, { upsert: true })
 
     const resp = await sendMail(inputEmail, "Login link", "Login link", loginLink)
 

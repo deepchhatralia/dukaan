@@ -17,7 +17,6 @@ import { storeLinkExist } from '../db.validators/store.db.validator'
 
 router.post('/signin',
     validate([emailValidator, storeLinkValidator]),
-    dbValidate([storeLinkExist]),
     signInController
 )
 
