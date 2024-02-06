@@ -19,11 +19,17 @@ const findCategory = async (filter) => {
 }
 
 const deleteCategoryById = async (category_id, storeId) => {
-    return await getDb().db(dbName).collection(collectionName).deleteOne({ _id: new ObjectId(category_id), store_id: new ObjectId(storeId) })
+    return await getDb().db(dbName).collection(collectionName).deleteOne(
+        { _id: new ObjectId(category_id), store_id: new ObjectId(storeId) }
+    )
 }
 
 const updateCategoryById = async (category_id, categoryObject) => {
-    return await getDb().db(dbName).collection(collectionName).findOneAndUpdate({ _id: new ObjectId(category_id) }, { $set: { ...categoryObject } }, { returnDocument: 'after' })
+    return await getDb().db(dbName).collection(collectionName).findOneAndUpdate(
+        { _id: new ObjectId(category_id) },
+        { $set: { ...categoryObject } },
+        { returnDocument: 'after' }
+    )
 }
 
 export { addCategory, findCategoryByStore, findCategory, deleteCategoryById, updateCategoryById }

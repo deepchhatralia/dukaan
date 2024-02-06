@@ -25,7 +25,8 @@ const updateAddress = async (filter, addressObject) => {
 }
 
 const deleteAddressById = async (addressId, customerId) => {
-    return await getDb().db(dbName).collection(collectionName).deleteOne({ _id: new ObjectId(addressId), customer_id: new ObjectId(customerId) });
+    return await getDb().db(dbName).collection(collectionName).deleteOne(
+        { _id: new ObjectId(addressId), customer_id: new ObjectId(customerId) });
 }
 
 export { getAddressById, getAllCustomerAddress, insertAddress, updateAddress, deleteAddressById }

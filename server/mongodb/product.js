@@ -20,7 +20,9 @@ const findProductByCategoryId = async (categoryId) => {
 }
 
 const findProductById = async (product_id, storeId) => {
-    return await getDb().db(dbName).collection(collectionName).findOne({ _id: new ObjectId(product_id), store_id: new ObjectId(storeId) });
+    return await getDb().db(dbName).collection(collectionName).findOne(
+        { _id: new ObjectId(product_id), store_id: new ObjectId(storeId) }
+    );
 }
 
 const findProduct = async (filter) => {
@@ -28,7 +30,9 @@ const findProduct = async (filter) => {
 }
 
 const findActiveProducts = async (storeId) => {
-    return await getDb().db(dbName).collection(collectionName).find({ store_id: new ObjectId(storeId), isActive: true }).toArray();
+    return await getDb().db(dbName).collection(collectionName).find(
+        { store_id: new ObjectId(storeId), isActive: true }
+    ).toArray();
 }
 
 const addProduct = async (productObject) => {
@@ -36,11 +40,17 @@ const addProduct = async (productObject) => {
 }
 
 const deleteProductById = async (productId, storeId) => {
-    return await getDb().db(dbName).collection(collectionName).deleteOne({ _id: new ObjectId(productId), store_id: new ObjectId(storeId) });
+    return await getDb().db(dbName).collection(collectionName).deleteOne(
+        { _id: new ObjectId(productId), store_id: new ObjectId(storeId) }
+    );
 }
 
 const updateProductById = async (product_id, storeId, productObject) => {
-    return await getDb().db(dbName).collection(collectionName).findOneAndUpdate({ _id: new ObjectId(product_id), store_id: new ObjectId(storeId) }, { $set: { ...productObject } }, { returnDocument: 'after' })
+    return await getDb().db(dbName).collection(collectionName).findOneAndUpdate(
+        { _id: new ObjectId(product_id), store_id: new ObjectId(storeId) },
+        { $set: { ...productObject } },
+        { returnDocument: 'after' }
+    )
 }
 
 export { findActiveProducts, findProductById, findProductByStoreLink, findProductByCategoryId, findProductByStore, findProduct, addProduct, deleteProductById, updateProductById }
