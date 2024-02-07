@@ -52,7 +52,13 @@ const getStoreId = async (ctx, next) => {
     if (!store) {
         return ctx.body = { success: "false", msg: "Store doesnt exist" }
     }
-    ctx.user["store_id"] = store._id
+
+    // for no auth
+    if (!ctx.user) {
+        ctx.user = { store_id: store._id }
+    } else {
+        ctx.user["store_id"] = store._id
+    }
 
     await next()
 }
