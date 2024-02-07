@@ -18,7 +18,7 @@ const loginController = async ctx => {
 
     const { _id, firstName, lastName, email, role } = data
 
-    const passwordMatched = await comparePassword(password, data.password);
+    const passwordMatched = comparePassword(password, data.password);
 
     if (passwordMatched) {
         const token = generateJwt({ _id, email, role });
@@ -35,7 +35,7 @@ const loginController = async ctx => {
 const signupController = async ctx => {
     const { fname, lname, email, password } = ctx.request.body;
 
-    const hashedPassword = await hashPassword(password);
+    const hashedPassword = hashPassword(password);
 
     const ack = await insertStaff({ firstName: fname, lastName: lname, email, password: hashedPassword, store_id: null, role: roles.MERCHANT });
 
@@ -54,7 +54,7 @@ const changePasswordController = async (ctx) => {
     const newPassword = ctx.request.body?.password.trim();
 
 
-    const newHashedPassword = await hashPassword(newPassword);
+    const newHashedPassword = hashPassword(newPassword);
 
     await updateStaff({ email }, { $set: { password: newHashedPassword } })
 
