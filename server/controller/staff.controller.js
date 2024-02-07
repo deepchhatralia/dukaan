@@ -1,5 +1,5 @@
 
-const sendMail = require('../service/sendMail')
+import sendMail from '../service/sendMail'
 import { generateJwt, decodeJwt } from '../service/jwtService'
 import { hashPassword } from '../service/passwordService'
 import { findStaffByEmail, insertStaff } from '../mongodb/staff'
