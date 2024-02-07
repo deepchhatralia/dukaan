@@ -4,19 +4,37 @@ import { getDb } from '../config/db.config'
 
 dotenv.config()
 
+const pageLimit = process.env.PAGE_LIMIT
 const dbName = process.env.DB_NAME
 const collectionName = 'product'
 
-const findProductByStore = async (storeId) => {
-    return await getDb().db(dbName).collection(collectionName).find({ store_id: new ObjectId(storeId) }).toArray();
+const findProductByStore = async (storeId, page, sortBy) => {
+    const upperBound = page * pageLimit
+    const lowerBound = upperBound - pageLimit
+    const sorting = {}
+
+    if (sortBy) {
+        const sortOrder = sortBy[0] === '-' ? -1 : 1
+        const sortKey = sortBy[0] === '-' ? sortBy.slice(1) : sortBy
+        sorting[sortKey] = sortOrder
+    }
+
+    return await getDb().db(dbName).collection(collectionName).find(
+        { store_id: new ObjectId(storeId) }
+    )
+        .skip(lowerBound)
+        .limit(upperBound)
+        .sort(sorting)
+        .toArray()
+
 }
 
 const findProductByStoreLink = async (store_link) => {
     return await getDb().db(dbName).collection(collectionName).find({ store_link }).toArray();
 }
 
-const findProductByCategoryId = async (categoryId) => {
-    return await getDb().db(dbName).collection(collectionName).find({ category_id: new ObjectId(categoryId) }).toArray();
+const findProductByCategoryId = async (categoryId, store_id) => {
+    return await getDb().db(dbName).collection(collectionName).find({ category_id: new ObjectId(categoryId), store_id: new ObjectId(store_id) }).toArray();
 }
 
 const findProductById = async (product_id, storeId) => {
@@ -29,10 +47,24 @@ const findProduct = async (filter) => {
     return await getDb().db(dbName).collection(collectionName).findOne(filter);
 }
 
-const findActiveProducts = async (storeId) => {
+const findActiveProducts = async (storeId, page, sortBy) => {
+    const upperBound = page * pageLimit
+    const lowerBound = upperBound - pageLimit
+    const sorting = {}
+
+    if (sortBy) {
+        const sortOrder = sortBy[0] === '-' ? -1 : 1
+        const sortKey = sortBy[0] === '-' ? sortBy.slice(1) : sortBy
+        sorting[sortKey] = sortOrder
+    }
+
     return await getDb().db(dbName).collection(collectionName).find(
         { store_id: new ObjectId(storeId), isActive: true }
-    ).toArray();
+    )
+        .skip(lowerBound)
+        .limit(upperBound)
+        .sort(sorting)
+        .toArray()
 }
 
 const addProduct = async (productObject) => {

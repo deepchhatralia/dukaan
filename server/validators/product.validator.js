@@ -214,5 +214,44 @@ const imageLinkValidator = ({ img }) => {
     return err
 }
 
+const pageNoValidator = (_, ctx) => {
+    let err = null
+    let page = ctx.query.page
 
-export { categoryIdValidator, categoryNameValidator, productIdValidator, oldProductNameValidator, productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator }
+    if (!page) {
+        err = { message: "Specify page", success: false }
+        return err
+    }
+
+    page = Number(page)
+
+    if (isNaN(page)) {
+        err = { message: "Invalid page", success: false }
+        return err
+    }
+    if (page < 1) {
+        err = { message: "Specify page", success: false }
+        return err
+    }
+    return err
+}
+
+const sortByValidator = (_, ctx) => {
+    let err = null
+    const sortBy = ctx.query.sortBy
+
+    if (!sortBy) {
+        return err
+    }
+    if (Array.isArray(sortBy)) {
+        err = { message: "Invalid sort by values", success: false }
+        return err
+    }
+    return err
+}
+
+
+export {
+    categoryIdValidator, categoryNameValidator, productIdValidator, oldProductNameValidator, productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator,
+    pageNoValidator, sortByValidator
+}

@@ -6,7 +6,7 @@ import auth2Middleware from '../middleware/auth2.middleware'
 import validate from '../middleware/validate.middleware'
 import dbValidate from '../middleware/dbValidate.middleware'
 
-import { productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator, productIdValidator, oldProductNameValidator } from '../validators/product.validator'
+import { productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator, productIdValidator, oldProductNameValidator, pageNoValidator, sortByValidator } from '../validators/product.validator'
 
 import { getProducts, addProductController, deleteProduct, updateProduct, getProduct, getActiveProducts, getProductsByStoreLink } from '../controller/product.controller'
 import { isMerchantCategory, isMerchantProduct, productNameAlreadyExist, productNameValidateForUpdate } from '../db.validators/product.db.validator'
@@ -32,11 +32,13 @@ router.get('/c/:productId',
 // auth routes
 router.get('/',
     auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
+    validate([pageNoValidator, sortByValidator]),
     getProducts
 )
 
 router.get('/getActiveProducts',
     auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
+    validate([pageNoValidator, sortByValidator]),
     getActiveProducts
 )
 

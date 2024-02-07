@@ -4,7 +4,10 @@ import { addProduct, deleteProductById, findProductByStore, updateProductById, f
 const getProducts = async (ctx) => {
     const storeId = ctx.user.store_id
 
-    const resp = await findProductByStore(storeId)
+    const page = ctx.query.page
+    const sortBy = ctx.query.sortBy
+
+    const resp = await findProductByStore(storeId, page, sortBy)
 
     if (!resp.length) {
         ctx.body = { success: false, msg: "No products found" }
@@ -14,9 +17,10 @@ const getProducts = async (ctx) => {
 }
 
 const getCategoryProducts = async (ctx) => {
-    const category_id = ctx.request.body.category_id
+    const category_id = ctx.params.categoryId
+    const store_id = ctx.user.store_id
 
-    const resp = await findProductByCategoryId(category_id)
+    const resp = await findProductByCategoryId(category_id, store_id)
 
     if (!resp.length) {
         ctx.body = { success: false, msg: "No products found" }
@@ -55,7 +59,10 @@ const getProduct = async (ctx) => {
 const getActiveProducts = async (ctx) => {
     const storeId = ctx.user.store_id
 
-    const resp = await findActiveProducts(storeId)
+    const page = ctx.query.page
+    const sortBy = ctx.query.sortBy
+
+    const resp = await findActiveProducts(storeId, page, sortBy)
 
     if (!resp.length) {
         ctx.body = { success: false, msg: "No products found" }
