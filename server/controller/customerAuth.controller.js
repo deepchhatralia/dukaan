@@ -1,5 +1,6 @@
-require('dotenv').config()
-import { ObjectId } from "mongodb"
+import dotenv from 'dotenv'
+dotenv.config()
+
 import roles from '../constants/roles'
 import { insertCustomer } from "../mongodb/customer"
 import { updateUser } from '../mongodb/user'
