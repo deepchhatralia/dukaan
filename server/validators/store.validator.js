@@ -131,8 +131,12 @@ const countryValidator = ({ country }) => {
     return err;
 }
 
-const storeIdValidator = ({ store_id }) => {
+const storeIdValidator = ({ store_id }, ctx) => {
     let err = null;
+
+    if (ctx.params.storeId) {
+        store_id = ctx.params.storeId
+    }
 
     if (!store_id) {
         err = { message: "Specify store id", field: "store_id" }

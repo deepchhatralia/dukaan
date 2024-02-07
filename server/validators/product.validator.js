@@ -1,8 +1,12 @@
 import { ObjectId } from "mongodb"
 
 
-const categoryIdValidator = ({ category_id }) => {
+const categoryIdValidator = ({ category_id }, ctx) => {
     let err = null;
+
+    if (ctx.params.categoryId) {
+        category_id = ctx.params.categoryId
+    }
 
     if (!category_id) {
         err = { message: "Specify category id", field: "category_id" }
