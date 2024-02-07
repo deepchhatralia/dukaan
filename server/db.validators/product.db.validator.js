@@ -39,6 +39,28 @@ const categoryNameValidateForUpdate = async (ctx) => {
         err = { success: false, data: resp, msg: "Category name already exist" }
         return err
     }
+
+    return err
+}
+
+const isMerchantCategory = async (ctx) => {
+    let err = null, filter;
+    let { category_id, category_name } = ctx.request.body
+
+    category_id = category_id.trim()
+    category_name = category_name.trim()
+    const storeId = ctx.user.store_id;
+
+    const regex = new RegExp(category_id)
+    filter = { store_id: new ObjectId(storeId), _id: new ObjectId(category_id) }
+
+    const resp = await findCategory(filter)
+
+    if (!resp) {
+        err = { success: false, data: resp, msg: "Category doesnt exist" }
+        return err
+    }
+
     return err
 }
 
@@ -82,6 +104,27 @@ const productNameValidateForUpdate = async (ctx) => {
     return err
 }
 
+const isMerchantProduct = async (ctx) => {
+    let err = null, filter;
+    let { product_id, product_name } = ctx.request.body
+
+    product_id = product_id.trim()
+    product_name = product_name.trim()
+    const storeId = ctx.user.store_id;
+
+    const regex = new RegExp(product_id)
+    filter = { store_id: new ObjectId(storeId), _id: new ObjectId(product_id) }
+
+
+    const resp = await findProduct(filter)
+
+    if (!resp) {
+        err = { success: false, data: resp, msg: "Product doesnt exist" }
+        return err
+    }
+    return err
+}
+
 const productIdExist = async (ctx) => {
     let err = null
     const product_id = ctx.request.body.product_id.trim()
@@ -96,4 +139,4 @@ const productIdExist = async (ctx) => {
     return err
 }
 
-export { categoryAlreadyExist, productNameAlreadyExist, productNameValidateForUpdate, productIdExist, categoryNameValidateForUpdate }
+export { categoryAlreadyExist, productNameAlreadyExist, productNameValidateForUpdate, productIdExist, categoryNameValidateForUpdate, isMerchantCategory, isMerchantProduct }

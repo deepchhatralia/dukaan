@@ -7,10 +7,10 @@ import validate from '../middleware/validate.middleware'
 
 import dbValidate from '../middleware/dbValidate.middleware'
 
-const { categoryNameValidator, categoryIdValidator } = require('../validators/product.validator');
-const { getCategories, deleteCategory, addCategoryController, updateCategory } = require('../controller/category.controller');
-const { categoryAlreadyExist, categoryNameValidateForUpdate } = require('../db.validators/product.db.validator');
-const { storeExist } = require('../db.validators/auth.db.validator');
+import { categoryNameValidator, categoryIdValidator } from '../validators/product.validator'
+import { getCategories, deleteCategory, addCategoryController, updateCategory } from '../controller/category.controller'
+import { categoryAlreadyExist, categoryNameValidateForUpdate, isMerchantCategory } from '../db.validators/product.db.validator'
+import { storeExist } from '../db.validators/auth.db.validator'
 
 router.get('/',
     auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
@@ -27,7 +27,7 @@ router.post('/addCategory',
 router.put('/updateCategory',
     auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
     validate([categoryIdValidator, categoryNameValidator]),
-    dbValidate([categoryNameValidateForUpdate]),
+    dbValidate([isMerchantCategory, categoryNameValidateForUpdate]),
     updateCategory
 )
 

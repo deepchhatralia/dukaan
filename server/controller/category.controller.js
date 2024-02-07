@@ -17,7 +17,7 @@ const addCategoryController = async ctx => {
     let { category_name } = ctx.request.body
 
     category_name = category_name.trim()
-    store_id = ctx.user.store_id
+    const store_id = ctx.user.store_id
 
     // ctx.body = store_id
     const resp = await addCategory({ category_name, store_id: new ObjectId(store_id) })
