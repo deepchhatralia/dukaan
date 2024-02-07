@@ -43,12 +43,16 @@ const categoryNameValidateForUpdate = async (ctx) => {
     return err
 }
 
+// for update update
 const isMerchantCategory = async (ctx) => {
     let err = null, filter;
     let { category_id, category_name } = ctx.request.body
 
+    if (category_name) {
+        category_name = category_name.trim()
+    }
+
     category_id = category_id.trim()
-    category_name = category_name.trim()
     const storeId = ctx.user.store_id;
 
     const regex = new RegExp(category_id)
@@ -65,7 +69,7 @@ const isMerchantCategory = async (ctx) => {
 }
 
 const productNameAlreadyExist = async (ctx) => {
-    let err = null
+    let err = null, filter
     let { product_name } = ctx.request.body
 
 
@@ -104,6 +108,7 @@ const productNameValidateForUpdate = async (ctx) => {
     return err
 }
 
+// for product update
 const isMerchantProduct = async (ctx) => {
     let err = null, filter;
     let { product_id, product_name } = ctx.request.body
