@@ -33,7 +33,8 @@ router.post('/addToCart',
 router.patch('/removeItem',
     auth2Middleware([roles.CUSTOMER]),
     validate([productIdValidator]),
-    // dbValidate([productIdExist]),
+    getStoreId,
+    dbValidate([productIdExist]),
     removeCartItem
 )
 
