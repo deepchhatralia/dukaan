@@ -11,7 +11,26 @@ import { categoryNameValidator, categoryIdValidator } from '../validators/produc
 import { getCategories, deleteCategory, addCategoryController, updateCategory } from '../controller/category.controller'
 import { categoryAlreadyExist, categoryNameValidateForUpdate, isMerchantCategory } from '../db.validators/product.db.validator'
 import { storeExist } from '../db.validators/auth.db.validator'
+import { storeLinkValidator } from '../validators/store.validator'
+import { getStoreId } from '../middleware/store.middleware'
+import { getCategoryProducts } from '../controller/product.controller'
 
+
+// no auth routes
+router.get('/c',
+    validate([storeLinkValidator]),
+    getStoreId,
+    getCategories
+)
+
+router.get('/c/:categoryId',
+    validate([categoryIdValidator, storeLinkValidator]),
+    getStoreId,
+    getCategoryProducts
+)
+
+
+// auth routes
 router.get('/',
     auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
     getCategories
@@ -35,6 +54,12 @@ router.delete('/deleteCategory',
     auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
     validate([categoryIdValidator]),
     deleteCategory
+)
+
+router.get('/:categoryId',
+    auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
+    validate([categoryIdValidator]),
+    getCategories
 )
 
 export default router
