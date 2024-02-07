@@ -37,7 +37,7 @@ const signupController = async ctx => {
 
     const hashedPassword = await hashPassword(password);
 
-    ack = await insertStaff({ firstName: fname, lastName: lname, email, password: hashedPassword, store_id: null, role: roles.MERCHANT });
+    const ack = await insertStaff({ firstName: fname, lastName: lname, email, password: hashedPassword, store_id: null, role: roles.MERCHANT });
 
     const token = generateJwt({ _id: ack.insertedId, email, role: roles.MERCHANT });
 

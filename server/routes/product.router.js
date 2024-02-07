@@ -9,7 +9,7 @@ import dbValidate from '../middleware/dbValidate.middleware'
 import { productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator, productIdValidator, oldProductNameValidator } from '../validators/product.validator'
 
 import { getProducts, addProductController, deleteProduct, updateProduct, getProduct, getActiveProducts, getProductsByStoreLink } from '../controller/product.controller'
-import { isMerchantProduct, productNameAlreadyExist, productNameValidateForUpdate } from '../db.validators/product.db.validator'
+import { isMerchantCategory, isMerchantProduct, productNameAlreadyExist, productNameValidateForUpdate } from '../db.validators/product.db.validator'
 import { storeExist } from '../db.validators/auth.db.validator'
 
 
@@ -34,7 +34,7 @@ router.get('/:productId',
 router.post('/addProduct',
     auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
     validate([productNameValidator, descriptionValidator, stockValidator, isActiveValidator, priceValidator, discountedPriceValidator, imageLinkValidator, categoryIdValidator]),
-    dbValidate([storeExist, productNameAlreadyExist]),
+    dbValidate([storeExist, isMerchantCategory, productNameAlreadyExist]),
     addProductController
 )
 
