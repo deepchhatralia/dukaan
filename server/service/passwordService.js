@@ -1,13 +1,13 @@
 import bcrypt from 'bcrypt'
+import md5 from 'md5'
 
-const hashPassword = async (password) => {
-    const data = await bcrypt.hash(password, 10)
-    return data
+const hashPassword = (password) => {
+    return md5(password);
 }
 
-const comparePassword = async (password, orignalHashedPassword) => {
-    const data = await bcrypt.compare(password, orignalHashedPassword)
-    return data
+const comparePassword = (password, orignalPassword) => {
+    const hashedPassword = hashPassword(password)
+    return hashedPassword === orignalPassword
 }
 
 export { hashPassword, comparePassword }
