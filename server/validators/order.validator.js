@@ -1,7 +1,12 @@
 import { ObjectId } from "mongodb"
+import orderStatus from '../constants/orderStatus'
 
-const orderIdValidator = ({ order_id }) => {
+const orderIdValidator = ({ order_id }, ctx) => {
     let err = null;
+
+    if (ctx.params.orderId) {
+        order_id = ctx.params.orderId
+    }
 
     if (!order_id) {
         err = { message: "Specify order id", field: "order_id" }
@@ -84,8 +89,8 @@ const statusValidator = ({ status }) => {
         return err
     }
 
-    if (status !== true && status !== false) {
-        err = { message: "Invalid status field", field: "status" }
+    if (typeof status !== 'number' || status < orderStatus.ACCEPTED || status > orderStatus.CANCELLED) {
+        err = { message: "Invalid status value", field: "status" }
         return err
     }
 
