@@ -1,4 +1,4 @@
-import sendMail from './sendMail'
+import { sendMail } from './sendMail'
 import { hashPassword, comparePassword } from './passwordService'
 import { generateJwt, decodeJwt } from './jwtService'
 import getObjectId from './getObjectId'

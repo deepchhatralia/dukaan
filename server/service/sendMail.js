@@ -23,4 +23,5 @@ const sendMail = async (to, subject, linkPreview, redirectLink) => {
     });
     console.log(info)
 };
+// export { sendMail }
 export default sendMail
