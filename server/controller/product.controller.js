@@ -1,13 +1,67 @@
 import { ObjectId } from 'mongodb'
 import { addProduct, deleteProductById, findProductByStore, updateProductById, findProductById, findActiveProducts, findProductByStoreLink, findProductByCategoryId } from '../mongodb/product'
 
+const lowStockThreshold = process.env.LOW_STOCK_THRESHOLD
+
 const getProducts = async (ctx) => {
     const storeId = ctx.user.store_id
+    let filter = { store_id: new ObjectId(storeId) }
 
-    const page = ctx.query.page
-    const sortBy = ctx.query.sortBy
+    const { page = 1, sortBy = 'product_name', productFilter, category } = ctx.query
 
-    const resp = await findProductByStore(storeId, page, sortBy)
+    if (productFilter && productFilter.trim()) {
+        // const y = productFilter.split(',').reduce((acc, curr) => {
+        //     if (curr === 'out_of_stock') {
+        //         acc['product_stock'] = 0;
+        //     }
+        //     if (curr === 'in_stock') {
+        //         acc['product_stock'] = { $gt: 0 };
+        //     }
+        //     if (curr === 'low_stock') {
+        //         acc['product_stock'] = { $lt: lowStockThreshold };
+        //     }
+        //     return acc;
+        // }, filter);
+        // console.log(y)
+
+        productFilter.split(',').forEach(val => {
+            val = val.trim()
+            if (val === 'out_of_stock') {
+                filter['product_stock'] = 0
+            }
+            if (val === 'in_stock') {
+                filter['product_stock'] = { $gt: 0 }
+            }
+            if (val === 'low_stock') {
+                filter['product_stock'] = { $lt: lowStockThreshold }
+            }
+        });
+    }
+
+    const pipeline = [
+        {
+            $match: filter
+        }
+    ]
+
+    if (category) {
+        pipeline.push(
+            {
+                $lookup: {
+                    from: 'category',
+                    foreignField: '_id',
+                    localField: 'category_id',
+                    as: 'category_detail'
+                }
+            },
+            {
+                $match: { 'category_detail.category_name': { $in: category.split(',') } }
+            }
+        )
+    }
+
+    // const resp = await findProductByStore(filter, page, sortBy.trim())
+    const resp = await findProductByStore(pipeline, page, sortBy.trim())
 
     if (!resp.length) {
         ctx.body = { success: false, msg: "No products found" }
@@ -59,10 +113,48 @@ const getProduct = async (ctx) => {
 const getActiveProducts = async (ctx) => {
     const storeId = ctx.user.store_id
 
-    const page = ctx.query.page
-    const sortBy = ctx.query.sortBy
+    let filter = { store_id: new ObjectId(storeId), isActive: true }
 
-    const resp = await findActiveProducts(storeId, page, sortBy)
+    let { page = 1, sortBy = 'product_name', productFilter, category } = ctx.query
+
+    if (productFilter) {
+        productFilter.split(',').forEach(val => {
+            val = val.trim()
+            if (val === 'out_of_stock') {
+                filter['product_stock'] = 0
+            }
+            if (val === 'in_stock') {
+                filter['product_stock'] = { $gt: 0 }
+            }
+            if (val === 'low_stock') {
+                filter['product_stock'] = { $lt: lowStockThreshold }
+            }
+        });
+    }
+
+    const pipeline = [
+        {
+            $match: filter
+        }
+    ]
+
+    if (category) {
+        pipeline.push(
+            {
+                $lookup: {
+                    from: 'category',
+                    foreignField: '_id',
+                    localField: 'category_id',
+                    as: 'category_detail'
+                }
+            },
+            {
+                $match: { 'category_detail.category_name': { $in: category.split(',') } }
+            }
+        )
+    }
+
+    const resp = await findActiveProducts(pipeline, page, sortBy)
 
     if (!resp.length) {
         ctx.body = { success: false, msg: "No products found" }

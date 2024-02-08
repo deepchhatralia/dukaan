@@ -1,10 +1,62 @@
 import { ObjectId } from "mongodb"
-import { addCategory, deleteCategoryById, updateCategoryById, findCategoryByStore } from "../mongodb/category"
+import { addCategory, deleteCategoryById, updateCategoryById, findCategoryByStore, findCategory, findCategories } from "../mongodb/category"
 
 const getCategories = async ctx => {
     const storeId = ctx.user.store_id
+    let { page, sortBy, categoryFilter } = ctx.query
 
-    const resp = await findCategoryByStore(storeId)
+    const lowStockThreshold = 5
+    const filter = {}
+
+    if (!page || page < 1) {
+        page = 1
+    }
+    if (!sortBy) {
+        sortBy = 'category_name'
+    }
+    // cat = z, a, d
+    if (categoryFilter) {
+        categoryFilter.split(',').forEach(val => {
+            val = val.trim()
+            if (val === 'out_of_stock') {
+                filter['total'] = 0
+            }
+            if (val === 'in_stock') {
+                filter['total'] = { "$gt": 0 }
+            }
+            if (val === 'low_stock') {
+                filter['total'] = { "$lt": lowStockThreshold }
+            }
+        });
+    }
+
+    const pipeline = [
+        {
+            $match: { store_id: new ObjectId(storeId) }
+        },
+        {
+            $lookup: {
+                from: 'product',
+                foreignField: 'category_id',
+                localField: '_id',
+                as: 'product_detail'
+            }
+        },
+        { $unwind: '$product_detail' },
+        {
+            $group: {
+                _id: "$_id",
+                category_name: { $first: "$category_name" },
+                store_id: { $first: "$store_id" },
+                total: { $sum: '$product_detail.product_stock' }
+            }
+        },
+        {
+            $match: filter
+        }
+    ]
+
+    const resp = await findCategories(pipeline, page, sortBy.trim())
 
     if (!resp.length) {
         ctx.body = { success: false, msg: "No categories found" }

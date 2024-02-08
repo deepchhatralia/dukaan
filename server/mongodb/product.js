@@ -8,46 +8,43 @@ const pageLimit = process.env.PAGE_LIMIT
 const dbName = process.env.DB_NAME
 const collectionName = 'product'
 
-const findProductByStore = async (storeId, page, sortBy) => {
-    const upperBound = page * pageLimit
-    const lowerBound = upperBound - pageLimit
+const findProductByStore = async (filter, page, sortBy) => {
+    const skipLimit = (page * pageLimit) - pageLimit
     const sorting = {}
 
     if (sortBy) {
         const sortOrder = sortBy[0] === '-' ? -1 : 1
-        const sortKey = sortBy[0] === '-' ? sortBy.slice(1) : sortBy
+        const sortKey = sortBy[0] === '-' ? sortBy.slice(sortBy.lastIndexOf('-') + 1) : sortBy
         sorting[sortKey] = sortOrder
     }
 
-    return await getDb().db(dbName).collection(collectionName).find(
-        { store_id: new ObjectId(storeId) }
-    )
-        .skip(lowerBound)
-        .limit(upperBound)
+    return await getDb.db(dbName).collection(collectionName).aggregate(filter)
+        .skip(Number(skipLimit))
+        .limit(Number(pageLimit))
         .sort(sorting)
         .toArray()
 
 }
 
 const findProductByStoreLink = async (store_link) => {
-    return await getDb().db(dbName).collection(collectionName).find({ store_link }).toArray();
+    return await getDb.db(dbName).collection(collectionName).find({ store_link }).toArray();
 }
 
 const findProductByCategoryId = async (categoryId, store_id) => {
-    return await getDb().db(dbName).collection(collectionName).find({ category_id: new ObjectId(categoryId), store_id: new ObjectId(store_id) }).toArray();
+    return await getDb.db(dbName).collection(collectionName).find({ category_id: new ObjectId(categoryId), store_id: new ObjectId(store_id) }).toArray();
 }
 
 const findProductById = async (product_id, storeId) => {
-    return await getDb().db(dbName).collection(collectionName).findOne(
+    return await getDb.db(dbName).collection(collectionName).findOne(
         { _id: new ObjectId(product_id), store_id: new ObjectId(storeId) }
     );
 }
 
 const findProduct = async (filter) => {
-    return await getDb().db(dbName).collection(collectionName).findOne(filter);
+    return await getDb.db(dbName).collection(collectionName).findOne(filter);
 }
 
-const findActiveProducts = async (storeId, page, sortBy) => {
+const findActiveProducts = async (pipeline, page, sortBy) => {
     const upperBound = page * pageLimit
     const lowerBound = upperBound - pageLimit
     const sorting = {}
@@ -58,8 +55,8 @@ const findActiveProducts = async (storeId, page, sortBy) => {
         sorting[sortKey] = sortOrder
     }
 
-    return await getDb().db(dbName).collection(collectionName).find(
-        { store_id: new ObjectId(storeId), isActive: true }
+    return await getDb.db(dbName).collection(collectionName).aggregate(
+        pipeline
     )
         .skip(lowerBound)
         .limit(upperBound)
@@ -68,17 +65,17 @@ const findActiveProducts = async (storeId, page, sortBy) => {
 }
 
 const addProduct = async (productObject) => {
-    return await getDb().db(dbName).collection(collectionName).insertOne(productObject);
+    return await getDb.db(dbName).collection(collectionName).insertOne(productObject);
 }
 
 const deleteProductById = async (productId, storeId) => {
-    return await getDb().db(dbName).collection(collectionName).deleteOne(
+    return await getDb.db(dbName).collection(collectionName).deleteOne(
         { _id: new ObjectId(productId), store_id: new ObjectId(storeId) }
     );
 }
 
 const updateProductById = async (product_id, storeId, productObject) => {
-    return await getDb().db(dbName).collection(collectionName).findOneAndUpdate(
+    return await getDb.db(dbName).collection(collectionName).findOneAndUpdate(
         { _id: new ObjectId(product_id), store_id: new ObjectId(storeId) },
         { $set: { ...productObject } },
         { returnDocument: 'after' }
