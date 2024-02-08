@@ -6,7 +6,6 @@ import bodyParser from 'koa-bodyparser'
 import cors from 'koa-cors'
 
 const app = new koa()
-import { init } from './config/db.config'
 
 const PORT = process.env.PORT;
 
@@ -35,11 +34,4 @@ app.use((ctx) => {
     ctx.body = "Page not found..."
 })
 
-
-init((err, db) => {
-    if (err) {
-        console.log(err);
-        return;
-    }
-    app.listen(PORT, () => console.log(`Server is listening on PORT: ${PORT}`))
-})
+app.listen(PORT, () => console.log(`Server is listening on PORT: ${PORT}`))
