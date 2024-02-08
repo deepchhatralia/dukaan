@@ -32,13 +32,12 @@ router.get('/c/:productId',
 // auth routes
 router.get('/',
     auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
-    validate([pageNoValidator, sortByValidator]),
     getProducts
 )
 
 router.get('/getActiveProducts',
     auth2Middleware([roles.MERCHANT, roles.ADMIN, roles.MANAGER]),
-    validate([pageNoValidator, sortByValidator]),
+    validate([sortByValidator]),
     getActiveProducts
 )
 

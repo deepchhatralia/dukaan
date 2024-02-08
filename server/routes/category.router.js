@@ -7,7 +7,7 @@ import validate from '../middleware/validate.middleware'
 
 import dbValidate from '../middleware/dbValidate.middleware'
 
-import { categoryNameValidator, categoryIdValidator } from '../validators/product.validator'
+import { categoryNameValidator, categoryIdValidator, pageNoValidator } from '../validators/product.validator'
 import { getCategories, deleteCategory, addCategoryController, updateCategory } from '../controller/category.controller'
 import { categoryAlreadyExist, categoryNameValidateForUpdate, isMerchantCategory } from '../db.validators/product.db.validator'
 import { storeExist } from '../db.validators/auth.db.validator'

@@ -84,7 +84,7 @@ const totalValidator = ({ total }) => {
 const statusValidator = ({ status }) => {
     let err = null;
 
-    if (!status) {
+    if (!status && status !== 0) {
         err = { message: "Specify order status", field: "status" }
         return err
     }
