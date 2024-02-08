@@ -8,14 +8,12 @@ const collectionName = 'category'
 
 const pageLimit = process.env.PAGE_LIMIT
 
-const addCategory = async (obj) => {
-    return await getDb.db(dbName).collection(collectionName).insertOne(obj);
-}
+const addCategory = (obj) => getDb.db(dbName).collection(collectionName).insertOne(obj);
 
-const findCategoryByStore = async (storeId, page) => {
+const findCategoryByStore = (storeId, page) => {
     const skipLimit = (page * pageLimit) - pageLimit
 
-    return await getDb.db(dbName).collection(collectionName).find(
+    return getDb.db(dbName).collection(collectionName).find(
         { store_id: new ObjectId(storeId) }
     )
         .skip(skipLimit)
@@ -23,11 +21,9 @@ const findCategoryByStore = async (storeId, page) => {
         .toArray()
 }
 
-const findCategory = async (filter, projection) => {
-    return await getDb.db(dbName).collection(collectionName).findOne(filter, projection);
-}
+const findCategory = (filter, projection) => getDb.db(dbName).collection(collectionName).findOne(filter, projection);
 
-const findCategories = async (filter, page, sortBy) => {
+const findCategories = (filter, page, pageLimit, sortBy) => {
     const skipLimit = (page * pageLimit) - pageLimit
     const sorting = {}
 
@@ -37,29 +33,33 @@ const findCategories = async (filter, page, sortBy) => {
         sorting[sortKey] = sortOrder
     }
 
-    return await getDb.db(dbName).collection(collectionName).aggregate(filter)
+    return getDb.db(dbName).collection(collectionName)
+        .aggregate(filter)
         .skip(Number(skipLimit))
         .limit(Number(pageLimit))
         .sort(sorting)
         .toArray();
 }
 
-const findCategoryIdByName = async (filter, projection) => {
-    return await getDb.db(dbName).collection(collectionName).find(filter).project({ projection }).toArray();
-}
+const findCategoryIdByName = (filter, projection) =>
+    getDb.db(dbName).collection(collectionName)
+        .find(filter)
+        .project({ projection })
+        .toArray();
 
-const deleteCategoryById = async (category_id, storeId) => {
-    return await getDb.db(dbName).collection(collectionName).deleteOne(
-        { _id: new ObjectId(category_id), store_id: new ObjectId(storeId) }
+const deleteCategoryById = (category_id, storeId) => getDb.db(dbName).collection(collectionName)
+    .deleteOne(
+        {
+            _id: new ObjectId(category_id),
+            store_id: new ObjectId(storeId)
+        }
     )
-}
 
-const updateCategoryById = async (category_id, categoryObject) => {
-    return await getDb.db(dbName).collection(collectionName).findOneAndUpdate(
+const updateCategoryById = (category_id, categoryObject) => getDb.db(dbName).collection(collectionName)
+    .findOneAndUpdate(
         { _id: new ObjectId(category_id) },
         { $set: { ...categoryObject } },
         { returnDocument: 'after' }
     )
-}
 
 export { addCategory, findCategoryByStore, findCategory, findCategories, findCategoryIdByName, deleteCategoryById, updateCategoryById }

@@ -7,16 +7,11 @@ dotenv.config()
 const dbName = process.env.DB_NAME
 const collectionName = 'invitedStaff'
 
-const findInvitedStaff = async (filter) => {
-    return await getDb.db(dbName).collection(collectionName).findOne(filter)
-}
+const findInvitedStaff = (filter) => getDb.db(dbName).collection(collectionName).findOne(filter)
 
-const updateInvitedStaff = async (filter, update_fields, options = {}) => {
-    return await getDb.db(dbName).collection(collectionName).updateOne(filter, update_fields, options)
-}
+const updateInvitedStaff = (filter, update_fields, options = {}) => getDb.db(dbName).collection(collectionName)
+    .updateOne(filter, update_fields, options)
 
-const deleteInvitedStaff = async (token) => {
-    return await getDb.db(dbName).collection(collectionName).deleteOne(token)
-}
+const deleteInvitedStaff = (token) => getDb.db(dbName).collection(collectionName).deleteOne(token)
 
 export { findInvitedStaff, updateInvitedStaff, deleteInvitedStaff }
