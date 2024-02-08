@@ -20,6 +20,7 @@ router.post('/',
 
 router.get('/:storeId',
     auth2Middleware([roles.MERCHANT]),
+    validate([storeIdValidator]),
     getMerchantStoreById
 )
 
