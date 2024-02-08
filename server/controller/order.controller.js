@@ -72,7 +72,7 @@ const changeOrderStatus = async (ctx) => {
     const orderStatus = ctx.request.body.status;
     const order_id = ctx.request.body.order_id;
 
-    const filter = { store_id: new ObjectId(store_id), order_id: new ObjectId(order_id) }
+    const filter = { store_id: new ObjectId(store_id), _id: new ObjectId(order_id) }
     const update = { $set: { status: orderStatus } }
 
     const resp = await updateOrder(filter, update);
