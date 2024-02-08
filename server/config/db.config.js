@@ -6,20 +6,13 @@ import { MongoClient } from 'mongodb'
 
 const URI = process.env.MONGODB_URI;
 
-let client = null;
+const client = new MongoClient(URI, {});
 
-const init = async (cb) => {
-    if (client) return client;
+client.connect().then((res => {
+    console.log('Database connected successfully')
+})).catch((err) => {
+    console.log('Failed to conect db')
+})
 
-    MongoClient.connect(URI).then(db => {
-        client = db;
-
-        cb(null, client);
-    }).catch(err => {
-        cb(err, null);
-    })
-}
-
-const getDb = () => client;
-
-export { getDb, init }
+const getDb = client
+export { getDb }
