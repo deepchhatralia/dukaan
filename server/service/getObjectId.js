@@ -1,7 +1,7 @@
-import { ObjectId } from 'mongodb'
+import { ObjectId } from "mongodb";
 
 const getObjectId = (id) => {
-    return new ObjectId(id);
-}
+  return new ObjectId(id);
+};
 
-export default getObjectId 
+export default getObjectId;

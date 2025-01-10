@@ -1,6 +1,13 @@
-import sendMail from './sendMail'
-import { hashPassword, comparePassword } from './passwordService'
-import { generateJwt, decodeJwt } from './jwtService'
-import getObjectId from './getObjectId'
+import sendMail from "./sendMail";
+import { hashPassword, comparePassword } from "./passwordService";
+import { generateJwt, decodeJwt } from "./jwtService";
+import getObjectId from "./getObjectId";
 
-export { sendMail, hashPassword, comparePassword, generateJwt, decodeJwt, getObjectId }
+export {
+  sendMail,
+  hashPassword,
+  comparePassword,
+  generateJwt,
+  decodeJwt,
+  getObjectId,
+};
