@@ -1,4 +1,4 @@
-import ForgotPasswordForm from './ForgotPasswordForm'
-import SetNewPasswordForm from './SetNewPasswordForm'
+import ForgotPasswordForm from "./ForgotPasswordForm";
+import SetNewPasswordForm from "./SetNewPasswordForm";
 
-export { ForgotPasswordForm, SetNewPasswordForm }
+export { ForgotPasswordForm, SetNewPasswordForm };

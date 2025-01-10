@@ -1,32 +1,32 @@
-import { findCustomerByEmail } from "../mongodb/customer"
+import { findCustomerByEmail } from "../mongodb/customer";
 
 const emailExistValidator = async (ctx) => {
-    const email = ctx.request.body.email.trim()
+  const email = ctx.request.body.email.trim();
 
-    let err = null;
+  let err = null;
 
-    let ack = await findCustomerByEmail(email)
+  let ack = await findCustomerByEmail(email);
 
-    if (ack) {
-        err = { success: false, msg: "Email already exist" }
-        return err;
-    }
+  if (ack) {
+    err = { success: false, msg: "Email already exist" };
     return err;
-}
+  }
+  return err;
+};
 
 const emailDoesntExistValidator = async (ctx) => {
-    let err = null;
+  let err = null;
 
-    const inputEmail = ctx.request.body.email.trim()
+  const inputEmail = ctx.request.body.email.trim();
 
-    const data = await findCustomerByEmail(inputEmail)
+  const data = await findCustomerByEmail(inputEmail);
 
-    if (!data) {
-        err = { success: false, msg: "Email doesnt exist" }
-        return err;
-    }
-    ctx.user = data
-    return null;
-}
+  if (!data) {
+    err = { success: false, msg: "Email doesnt exist" };
+    return err;
+  }
+  ctx.user = data;
+  return null;
+};
 
-export { emailExistValidator, emailDoesntExistValidator }
+export { emailExistValidator, emailDoesntExistValidator };
